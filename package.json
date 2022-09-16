@@ -4,9 +4,9 @@
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
-		"vscode": "^1.41.0"
+		"vscode": "^1.54.0"
 	},
-	"publisher": "pme123",
+	"publisher": "test",
 	"categories": [
 		"Other"
 	],

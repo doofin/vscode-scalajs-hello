@@ -1,12 +1,12 @@
-import scala.sys.process._
+import scala.sys.process.*
+import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitStyle}
 
-lazy val scalajsSettings = Seq(
-  scalacOptions += "-P:scalajs:sjsDefinedByDefault"
-)
+val scala3Version = "3.2.0"
+val vscodeVersion = "1.70.0"
 
 lazy val installDependencies = Def.task[Unit] {
-  val base = (baseDirectory in ThisProject).value
-  val log = (streams in ThisProject).value.log
+  val base = baseDirectory.value
+  val log = streams.value.log
   if (!(base / "node_module").exists) {
     val pb =
       new java.lang.ProcessBuilder("npm", "install")
@@ -21,8 +21,8 @@ lazy val open = taskKey[Unit]("open vscode")
 def openVSCodeTask: Def.Initialize[Task[Unit]] =
   Def
     .task[Unit] {
-      val base = (baseDirectory in ThisProject).value
-      val log = (streams in ThisProject).value.log
+      val base = baseDirectory.value
+      val log = streams.value.log
 
       val path = base.getCanonicalPath
       s"code --extensionDevelopmentPath=$path" ! log
@@ -32,21 +32,18 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
 
 lazy val root = project
   .in(file("."))
-  .settings(scalajsSettings)
+  .enablePlugins(ScalaJSPlugin, ScalablyTypedConverterPlugin, ScalaJSBundlerPlugin)
   .settings(
-    scalaVersion := "2.12.10",
+    scalaVersion := scala3Version,
     moduleName := "vscode-scalajs-hello",
-    scalacOptions += "-P:scalajs:sjsDefinedByDefault",
-    scalaJSModuleKind := ModuleKind.CommonJSModule,
-    artifactPath in (Compile, fastOptJS) := baseDirectory.value / "out" / "extension.js",
-    artifactPath in (Compile, fullOptJS) := baseDirectory.value / "out" / "extension.js",
-    open := openVSCodeTask.dependsOn(fastOptJS in Compile).value,
-    libraryDependencies ++= Seq(
-      ScalablyTyped.V.`vscode`,
-      "com.lihaoyi" %%% "utest" % "0.7.1" % "test"
+    scalaJSLinkerConfig ~= {
+      _.withModuleKind(ModuleKind.CommonJSModule)
+    },
+    Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
+    Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
+    Compile / npmDependencies ++= Seq(
+      "@types/vscode" -> vscodeVersion
     ),
-    npmDependencies in Compile ++= Seq("vscode" -> "1.41"),
-    testFrameworks += new TestFramework("utest.runner.Framework")
+    open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
     // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
   )
-  .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin)

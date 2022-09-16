@@ -1,64 +1,85 @@
-# vscode-scalajs-hello
+# VSCode Extension in Scala.js
 
-This Project is a port of the [helloworld-minimal-sample] to [ScalaJS]. It is based on the extension [accessible-scala].
+This Project is a port of the [helloworld-minimal-sample] to [ScalaJS]. It's an update of [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello).
 
-Please check there on how to describe a VSCode Extension.
+Please check the VSCode documentation for more general information.
 
 ## Your first Extension
-A step-by-step tutorial for **ScalaJS** using this example project.
+A step-by-step tutorial for **Scala.js** using this example project.
 
 Here is the original: [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension)
 
 ### Setup
 
-* Clone this project:
+* Install the extensions to develop: **Metals**, **Scala syntax**
 
-      git clone https://github.com/pme123/vscode-scalajs-hello.git
+* Clone this project
 
-* Open VSCode in the `sbt` console:
+* Open the project in VSCode, run the `import build` task with Metals (it should display a popup automatically).
 
-      open
+* Open the terminal, run
 
-  This will run `fastOptJS`and then open the Extension Host of _VSCode_.
+```
+sbt
+```
+You're now in the SBT console. Great! Let's compile to see if everything works:
+
+```
+compile
+```
+
+The first time it may take a few minutes, because Scala will use "ScalablyTyped" to analyze the types of the VSCode extension API. Thanks to this, it can typecheck your code and catch mistakes before you run the extension!
+
+* In the SBT console, transpile the extension to Javascript and open a new VSCode window with the extension loaded:
+
+```
+open
+```
+
+This will run `fastOptJS` and then open the Extension Host of VSCode.
 
 * Run the Hello World command from the Command Palette (`⇧⌘P`) in the new VSCode window.
 * Type `hello` and select `Hello World`.
   * You should see a Notification _Hello World!_.
 
-## Debug your Extension
-
-There seems not to be support for debugging Scala code directly in _VSCode_ (at least I did not find how to do this).
-
-However you can achieve this:
-
-1. Run the extension from VSCode. There is a launch configuration in `.vscode/launch.json`. so just press `F5` and another _VS Code_ window opens in debug mode.
-2. You have to set the Breakpoints in the generated Javascript (`out/extension.js`). Through `extension.js.map` the breakpoint will stop in your Scala code.
-
-> If you work in this mode, make sure in your _sbt console_ to transpile to Javascript continuously (`~fastOptJS`). So you see all your changes.
-
- ## How-To / Further Information
-Check out the (vsc-extension-quickstart.md) for some general _VSCode Extension_ explanations.
+## Project structure
 
 The project uses the following:
-* **ScalaJS** for general coding: [ScalaJS]
+* [SBT] build tool for building the project
+* [Scala.js] for general coding
+* [Scalably Typed] for JavaScript facades
+* [scalajs-bundler] for bundling the JavaScript dependencies
 
-  The `extension.js` from [helloworld-minimal-sample], is now `src/main/scala/extension.scala`.
-
-* **ScalablyTyped** for JavaScript facades: [Scalably Typed]
-
-  The Hello World only uses the `vscode` bindings. But you can use any other _Typescript_ binding supported by _ScalablyTyped_.
-
-* **sbt** for building the project: [SBT]
-* **scalajs-bundler** for bundling the JavaScript dependencies: [scalajs-bundler].
-
-## Open Points
-
-* Publishing to the Marketplace.
-* Add Testing.
+SBT is configured with the `build.sbt` file. Scala.js, ScalablyTyped and the bundler are SBT plugins. With these, SBT manages your JavaScript `npm` dependencies. You should never have to run `npm` directly, simply edit the `npmDependencies` settings in `build.sbt`.
 
 [accessible-scala]: https://marketplace.visualstudio.com/items?itemName=scala-center.accessible-scala
 [helloworld-minimal-sample]: https://github.com/Microsoft/vscode-extension-samples/tree/master/helloworld-minimal-sample
-[Scalably Typed]: https://github.com/oyvindberg/ScalablyTyped
+[Scalably Typed]: https://github.com/ScalablyTyped/Converter
 [SBT]: https://www.scala-sbt.org
 [ScalaJS]: http://www.scala-js.org
 [scalajs-bundler]: https://github.com/scalacenter/scalajs-bundler
+
+## How do I code in Scala.js?
+
+In general, javascript functions and classes can be used in the same way as in JS/TS!
+If the typechecker disagrees, you can insert casts with `.asInstanceOf[Type]`.
+
+The JS types (like `js.Array`) are available with
+```scala
+import scala.scalajs.js
+```
+
+The VSCode classes and functions are available with
+```scala
+import typings.vscode.mod as vscode
+// to use:
+vscode.function(arg)
+```
+
+Some additional types are available in the `anon` subpackage, for example:
+```scala
+import typings.vscode.anon.Dispose
+vscode.commands.registerCommand(name, fun).asInstanceOf[Dispose]
+```
+
+You can find more information and tutorials on the [Scala.js website](https://www.scala-js.org/).

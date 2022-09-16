@@ -1,9 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 node_modules
-/.metals/
-/target/
-/.idea/
-out
-/.bloop/
-/project/.bloop/
-/project/project/target/
-/project/target/
+dist
+dist-ssr
+*.local
+vite.config.js.timestamp*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Scala
+target/
+metals.sbt
+.bloop/
+.bsp/
+.metals/
+out/

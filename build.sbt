@@ -1,12 +1,9 @@
 import scala.sys.process.*
 import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitStyle}
 
-val scala3Version = "3.2.0"
-val vscodeVersion = "1.70.0"
-
 lazy val installDependencies = Def.task[Unit] {
-  val base = baseDirectory.value
-  val log = streams.value.log
+  val base = (ThisProject / baseDirectory).value
+  val log = (ThisProject / streams).value.log
   if (!(base / "node_module").exists) {
     val pb =
       new java.lang.ProcessBuilder("npm", "install")
@@ -21,8 +18,8 @@ lazy val open = taskKey[Unit]("open vscode")
 def openVSCodeTask: Def.Initialize[Task[Unit]] =
   Def
     .task[Unit] {
-      val base = baseDirectory.value
-      val log = streams.value.log
+      val base = (ThisProject / baseDirectory).value
+      val log = (ThisProject / streams).value.log
 
       val path = base.getCanonicalPath
       s"code --extensionDevelopmentPath=$path" ! log
@@ -32,18 +29,22 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
 
 lazy val root = project
   .in(file("."))
-  .enablePlugins(ScalaJSPlugin, ScalablyTypedConverterPlugin, ScalaJSBundlerPlugin)
   .settings(
-    scalaVersion := scala3Version,
+    scalaVersion := "3.3.1",
     moduleName := "vscode-scalajs-hello",
-    scalaJSLinkerConfig ~= {
-      _.withModuleKind(ModuleKind.CommonJSModule)
-    },
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
-    Compile / npmDependencies ++= Seq(
-      "@types/vscode" -> vscodeVersion
-    ),
     open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
+    libraryDependencies ++= Seq(
+      // ScalablyTyped.V.vscode,
+      "com.lihaoyi" %%% "utest" % "0.8.2" % "test"
+    ),
+    Compile / npmDependencies ++= Seq("@types/vscode" -> "1.84.1"),
+    testFrameworks += new TestFramework("utest.runner.Framework")
     // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
+  )
+  .enablePlugins(
+    ScalaJSPlugin,
+    ScalaJSBundlerPlugin,
+    ScalablyTypedConverterPlugin
   )

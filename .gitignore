@@ -1,11 +1,8 @@
+package-lock.json
+
 # Logs
 logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
 node_modules
 dist
@@ -14,8 +11,7 @@ dist-ssr
 vite.config.js.timestamp*
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode
 .idea
 .DS_Store
 *.suo
@@ -31,3 +27,14 @@ metals.sbt
 .bsp/
 .metals/
 out/
+/.metals/
+/target/
+/.idea/
+out
+/.bloop/
+/project/.bloop/
+/project/metals.sbt
+/project/project/
+/project/target/
+/.bsp/
+

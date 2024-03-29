@@ -14,7 +14,8 @@ lazy val installDependencies = Def.task[Unit] {
   }
 }
 
-lazy val open = taskKey[Unit]("open vscode")
+lazy val open = taskKey[Unit]("open vscode") // open command
+
 def openVSCodeTask: Def.Initialize[Task[Unit]] =
   Def
     .task[Unit] {

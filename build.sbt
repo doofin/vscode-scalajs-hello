@@ -14,7 +14,8 @@ lazy val installDependencies = Def.task[Unit] {
   }
 }
 
-lazy val open = taskKey[Unit]("open vscode") // open command
+// open command in sbt
+lazy val open = taskKey[Unit]("open vscode")
 
 def openVSCodeTask: Def.Initialize[Task[Unit]] =
   Def
@@ -31,13 +32,12 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
 lazy val root = project
   .in(file("."))
   .settings(
-    scalaVersion := "3.3.1",
+    scalaVersion := "3.3.3",
     moduleName := "vscode-scalajs-hello",
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
     libraryDependencies ++= Seq(
-      // ScalablyTyped.V.vscode,
       "com.lihaoyi" %%% "utest" % "0.8.2" % "test"
     ),
     Compile / npmDependencies ++= Seq("@types/vscode" -> "1.84.1"),

@@ -1,8 +1,7 @@
 # VSCode Extension in Scala.js
 
-This Project is a port of the [helloworld-minimal-sample] to [ScalaJS]. It's an update of [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello).
+This is an update of [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
 
-Please check the VSCode documentation for more general information.
 
 ## Your first Extension
 A step-by-step tutorial for **Scala.js** using this example project.
@@ -17,26 +16,18 @@ Here is the original: [visualstudio.com/api/get-started](https://code.visualstud
 
 * Open the project in VSCode, run the `import build` task with Metals (it should display a popup automatically).
 
-* Open the terminal, run
-
+* Open the terminal, run  below : (The first time it may take a few minutes, because Scala will use "ScalablyTyped" to analyze the types of the VSCode extension API.
+)
 ```
-sbt
-```
-You're now in the SBT console. Great! Let's compile to see if everything works:
-
-```
-compile
+sbt compile
 ```
 
-The first time it may take a few minutes, because Scala will use "ScalablyTyped" to analyze the types of the VSCode extension API. Thanks to this, it can typecheck your code and catch mistakes before you run the extension!
 
-* In the SBT console, transpile the extension to Javascript and open a new VSCode window with the extension loaded:
+Below will open a new VSCode window with the extension loaded:
 
 ```
-open
+sbt open
 ```
-
-This will run `fastOptJS` and then open the Extension Host of VSCode.
 
 * Run the Hello World command from the Command Palette (`⇧⌘P`) in the new VSCode window.
 * Type `hello` and select `Hello World`.

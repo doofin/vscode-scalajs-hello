@@ -1,25 +1,25 @@
 {
-	"name": "vscode-scalajs-hello",
-	"displayName": "vscode-scalajs-hello",
-	"description": "",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.84.0"
-	},
-	"publisher": "test",
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.helloWorld"
-	],
-	"main": "./out/extension",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	}
+    "name": "vscode-scalajs-hello",
+    "displayName": "vscode-scalajs-hello",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.84.0"
+    },
+    "publisher": "test",
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.helloWorld",
+                "title": "Hello World"
+            }
+        ]
+    }
 }

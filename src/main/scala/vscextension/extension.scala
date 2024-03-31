@@ -1,3 +1,5 @@
+package vscextension
+
 import typings.vscode.mod as vscode
 import typings.vscode.anon.Dispose
 
@@ -12,9 +14,7 @@ object extension {
     */
   @JSExportTopLevel("activate") // Exports the function to javascript so that VSCode can load it
   def activate(context: vscode.ExtensionContext): Unit = {
-    println(
-      """your extension "vscode-scalajs-hello" is now active!"""
-    )
+    println("extension vscode-scalajs-hello loaded!")
 
     // Store all the commands here
     val commands = Seq(
@@ -26,8 +26,7 @@ object extension {
       context.subscriptions.push(
         vscode.commands
           .registerCommand(name, fun)
-          .asInstanceOf[Dispose]
-          // to make the typechecker happy (VSCode has typescript facades nowadays)
+          .asInstanceOf[Dispose] // to make typescript facades happy
       )
     }
   }

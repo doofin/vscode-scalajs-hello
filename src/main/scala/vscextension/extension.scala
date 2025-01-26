@@ -21,7 +21,7 @@ object extension {
       ("extension.helloWorld", showHello)
     )
 
-    // Register the commands in VSCode
+    // register the commands in command palette (ctrl+shift+p)
     commands foreach { (name, fun) =>
       context.subscriptions.push(
         vscode.commands
@@ -30,17 +30,18 @@ object extension {
       )
     }
 
-    // register inline completions
+    // register inline completions like github copilot
     InlineCompletions.registerInlineCompletions()
   }
 
   /** Example command. VSCode commands can take an argument of any type, hence the `Any` here.
     *
     * @param arg
-    *   the argument (which we don't use, but it could be useful for other commands)
+    *   the argument (we don't use, but could be useful for other commands)
     */
   def showHello(arg: Any): Unit = {
-    // show a mess
+    // show a message box when the command is executed in command palette
+    // by typing hello 
     vscode.window.showInformationMessage(s"Hello World! How are you ?")
   }
 }

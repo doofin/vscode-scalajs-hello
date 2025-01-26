@@ -23,6 +23,7 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
       val base = (ThisProject / baseDirectory).value
       val log = (ThisProject / streams).value.log
 
+      // launch vscode
       val path = base.getCanonicalPath
       s"code --extensionDevelopmentPath=$path" ! log
       ()

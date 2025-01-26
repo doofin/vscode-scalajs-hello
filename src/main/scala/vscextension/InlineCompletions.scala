@@ -7,7 +7,8 @@ import scala.collection.immutable
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.JSRichIterableOnce
 /**
-  * InlineCompletions is a simple extension that demonstrates how to provide inline completions in the editor.
+  * demonstrates how to provide inline completions in the editor.
+  * like the github copilot
   * https://github.com/microsoft/vscode-extension-samples/tree/main/inline-completions 
   */
 object InlineCompletions {
@@ -22,10 +23,13 @@ object InlineCompletions {
       ) ={
         val text = document.getText(new vscode.Range(position, position))
         val word = text.split(" ").last
+
+
+        // always return a list of items, only first item will be displayed
         val items = List("foo", "bar", "baz")
-          .filter(_.startsWith(word))
-          .map { label =>
-            new vscode.InlineCompletionItem(label, new vscode.Range(position, position))
+          // .filter(_.startsWith(word))
+          .map { str =>
+            new vscode.InlineCompletionItem(str, new vscode.Range(position, position))
           }
 
         items.toJSArray

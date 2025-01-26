@@ -29,6 +29,9 @@ object extension {
           .asInstanceOf[Dispose] // to make typescript facades happy
       )
     }
+
+    // register inline completions
+    InlineCompletions.registerInlineCompletions()
   }
 
   /** Example command. VSCode commands can take an argument of any type, hence the `Any` here.

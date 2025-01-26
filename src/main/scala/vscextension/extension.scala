@@ -37,6 +37,7 @@ object extension {
     *   the argument (which we don't use, but it could be useful for other commands)
     */
   def showHello(arg: Any): Unit = {
+    // show a mess
     vscode.window.showInformationMessage(s"Hello World! How are you ?")
   }
 }

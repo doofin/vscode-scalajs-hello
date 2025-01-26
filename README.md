@@ -1,12 +1,11 @@
 # VSCode Extension in Scala.js
-
+Write vscode extensions in Scala.js!
 This is an update of [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
 
+Examples in typescript and javascript are available in the [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
 
-## Your first Extension
-A step-by-step tutorial for **Scala.js** using this example project.
 
-Here is the original: [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension)
+Here is the original: [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
 
 ### Setup
 
@@ -18,14 +17,12 @@ Here is the original: [visualstudio.com/api/get-started](https://code.visualstud
 
 * Open the terminal, run  below : (The first time it may take a few minutes, because Scala will use "ScalablyTyped" to analyze the types of the VSCode extension API.
 )
-```
+```bash
 sbt compile
 ```
 
-
-Below will open a new VSCode window with the extension loaded:
-
-```
+open a new VSCode window with the extension loaded:
+```bash
 sbt open
 ```
 

@@ -10,6 +10,7 @@ import scala.scalajs.js.JSConverters.JSRichIterableOnce
   * demonstrates how to provide inline completions in the editor.
   * like the github copilot
   * https://github.com/microsoft/vscode-extension-samples/tree/main/inline-completions 
+  * https://github.com/continuedev/continue/blob/main/core/autocomplete/CompletionProvider.ts
   */
 object InlineCompletions {
 

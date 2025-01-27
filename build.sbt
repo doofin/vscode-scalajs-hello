@@ -29,11 +29,16 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
       ()
     }
     .dependsOn(installDependencies)
-
+addCommandAlias("compile", ";fastOptJS")
 lazy val root = project
   .in(file("."))
   .settings(
     scalaVersion := "3.3.3",
+    // warn unused imports and vars
+    scalacOptions ++= Seq(
+      "-Ywarn-unused",
+      "-Ywarn-unused-import"
+    ),
     moduleName := "vscode-scalajs-hello",
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",

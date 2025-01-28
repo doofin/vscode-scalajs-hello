@@ -32,26 +32,37 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
 addCommandAlias("compile", ";fastOptJS")
 lazy val root = project
   .in(file("."))
-  .settings(
-    scalaVersion := "3.3.3",
-    // warn unused imports and vars
-    scalacOptions ++= Seq(
-      "-Ywarn-unused",
-      "-Ywarn-unused-import"
-    ),
-    moduleName := "vscode-scalajs-hello",
-    Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
-    Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
-    open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
-    libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "utest" % "0.8.2" % "test"
-    ),
-    Compile / npmDependencies ++= Seq("@types/vscode" -> "1.96.0", "vscode-languageclient" -> "9.0.1"),
-    testFrameworks += new TestFramework("utest.runner.Framework")
-    // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
-  )
   .enablePlugins(
     ScalaJSPlugin,
     ScalaJSBundlerPlugin,
     ScalablyTypedConverterPlugin
+  )
+  .settings(
+    scalaVersion := "3.3.4",
+    // warn unused imports and vars
+    scalacOptions ++= Seq(
+      "-Wunused:all"
+    ),
+    moduleName := "vscode-scalajs-hello",
+    Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
+    Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "utest" % "0.8.2" % "test"
+    ),
+    Compile / npmDependencies ++=
+      Seq(
+        "@types/vscode" -> "1.96.0", //
+        "vscode-languageclient" -> "9.0.1" // not working
+      ),
+    open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
+    // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
+    // emit ES module like import { Foo } from "bar.js";
+    // scalaJSLinkerConfig ~= {
+    //   _.withModuleKind(ModuleKind.ESModule)
+
+    // },
+    webpackBundlingMode := BundlingMode.LibraryAndApplication()
+    // scalaJSModuleKind ~= ModuleKind.ESModule
   )

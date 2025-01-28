@@ -9,8 +9,9 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 
 object extension {
 
-  /** This method is called when your extension is actived. The extension is activated the first time one of its
-    * features is used (here we only have commands).
+  /** The main entry for the extension.
+    *
+    * This method is called when your extension is actived first time.
     */
   @JSExportTopLevel("activate") // Exports the function to javascript so that VSCode can load it
   def activate(context: vscode.ExtensionContext): Unit = {
@@ -30,6 +31,7 @@ object extension {
       )
     }
 
+    lsp.start2()
     // register inline completions like github copilot
     InlineCompletions.registerInlineCompletions()
   }
@@ -41,7 +43,7 @@ object extension {
     */
   def showHello(arg: Any): Unit = {
     // show a message box when the command is executed in command palette
-    // by typing hello 
+    // by typing hello
     vscode.window.showInformationMessage(s"Hello World! How are you ?")
   }
 }

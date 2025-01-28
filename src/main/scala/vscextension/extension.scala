@@ -21,7 +21,7 @@ object extension {
     InlineCompletions.registerInlineCompletions()
 
     // language server client
-    lsp.start2()
+    lsp.startLsp()
   }
 
 }

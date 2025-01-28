@@ -35,6 +35,7 @@ object lspFacade {
     let client: LanguageClient;
 
      */
+    def start(): Unit = js.native
   }
 
   @js.native

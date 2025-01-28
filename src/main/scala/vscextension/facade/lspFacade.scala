@@ -6,10 +6,10 @@ import scala.scalajs.js.Promise
 
 object lspFacade {
   @js.native
-  @JSImport("vscode-languageclient/node", JSImport.Default)
-  /** not working due to weird/bad module organization
+  @JSImport("vscode-languageclient/node", "LanguageClient")
+  /** not compiled by scalably-typed, need manual implementation
     *
-    * Cannot find module 'vscode-languageclient/node'
+    * if Cannot find module 'vscode-languageclient/node', run npm install with the package.json in the root directory!
     *
     * @param id
     * @param name
@@ -23,7 +23,7 @@ object lspFacade {
       clientOptions: js.Object
   ) extends js.Object {
 
-    /* the code correspond to below, but it's not working
+    /* the original example from
     https://github.com/microsoft/vscode-extension-samples/blob/main/lsp-sample/client/src/extension.ts
     import {
       LanguageClient,

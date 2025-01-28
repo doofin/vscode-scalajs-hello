@@ -23,13 +23,15 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
       val base = (ThisProject / baseDirectory).value
       val log = (ThisProject / streams).value.log
 
-      // launch vscode
       val path = base.getCanonicalPath
+      // install deps to out dir
+      "cp package.json out/package.json" ! log
+      "npm install --prefix out" ! log
+      // launch vscode
       s"code --extensionDevelopmentPath=$path" ! log
       ()
     }
     .dependsOn(installDependencies)
-addCommandAlias("compile", ";fastOptJS")
 lazy val root = project
   .in(file("."))
   .enablePlugins(
@@ -56,13 +58,14 @@ lazy val root = project
       ),
     open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
     // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,
-    testFrameworks += new TestFramework("utest.runner.Framework"),
+    testFrameworks += new TestFramework("utest.runner.Framework")
     // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
     // emit ES module like import { Foo } from "bar.js";
     // scalaJSLinkerConfig ~= {
     //   _.withModuleKind(ModuleKind.ESModule)
 
     // },
-    webpackBundlingMode := BundlingMode.LibraryAndApplication()
+    // webpackBundlingMode := BundlingMode.LibraryAndApplication()
     // scalaJSModuleKind ~= ModuleKind.ESModule
   )
+addCommandAlias("compile", ";fastOptJS")

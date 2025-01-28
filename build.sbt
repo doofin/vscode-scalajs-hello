@@ -1,22 +1,9 @@
 import scala.sys.process.*
 import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitStyle}
 
-lazy val installDependencies = Def.task[Unit] {
-  val base = (ThisProject / baseDirectory).value
-  val log = (ThisProject / streams).value.log
-  if (!(base / "node_module").exists) {
-    val pb =
-      new java.lang.ProcessBuilder("npm", "install")
-        .directory(base)
-        .redirectErrorStream(true)
-
-    pb ! log
-  }
-}
-
+val outdir = "out" // output directory for the extension
 // open command in sbt
 lazy val open = taskKey[Unit]("open vscode")
-
 def openVSCodeTask: Def.Initialize[Task[Unit]] =
   Def
     .task[Unit] {
@@ -25,13 +12,21 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
 
       val path = base.getCanonicalPath
       // install deps to out dir
-      "cp package.json out/package.json" ! log
-      "npm install --prefix out" ! log
+      // print info with orange color
+      println("\u001b[33m" + "[copying] package.json to out dir" + "\u001b[0m")
+      s"cp package.json ${outdir}/package.json" ! log
+      if (!(base / outdir / "node_modules").exists) {
+        println("\u001b[33m" + "[installing] dependencies into out dir with npm" + "\u001b[0m")
+        s"npm install --prefix ${outdir}" ! log
+      } else {
+        println("\u001b[33m" + "[skipping] dependencies installation" + "\u001b[0m")
+      }
       // launch vscode
       s"code --extensionDevelopmentPath=$path" ! log
       ()
     }
-    .dependsOn(installDependencies)
+  // .dependsOn(installDependencies)
+
 lazy val root = project
   .in(file("."))
   .enablePlugins(
@@ -69,3 +64,16 @@ lazy val root = project
     // scalaJSModuleKind ~= ModuleKind.ESModule
   )
 addCommandAlias("compile", ";fastOptJS")
+
+/* lazy val installDependencies = Def.task[Unit] {
+  val base = (ThisProject / baseDirectory).value
+  val log = (ThisProject / streams).value.log
+  if (!(base / "node_module").exists) {
+    val pb =
+      new java.lang.ProcessBuilder("npm", "install")
+        .directory(base)
+        .redirectErrorStream(true)
+
+    pb ! log
+  }
+} */

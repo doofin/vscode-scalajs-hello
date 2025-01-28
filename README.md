@@ -1,27 +1,27 @@
 # VSCode Extension in Scala.js
-Write vscode extensions in Scala.js!
-This is an update of [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
+Write vscode extensions in Scala.js! This is a collection of examples and templates to get you started, with convenient sbt tasks to build and run your extension.
 
-Examples in typescript and javascript are available in the [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
+contains:
+- commands from the vscode command palette
+- inline completion like github copilot
+- language server protocol client
+- code actions (when pressing Alt+Enter at a code location)
 
-
-Here is the original: [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
+referenced:
+ - updated from [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
+ - [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
+ - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
+ - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.
+ - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.
 
 ### Setup
 
-* Install the extensions to develop: **Metals**, **Scala syntax**
-
+Steps:
+* Install the extensions to develop: **Metals**
 * Clone this project
-
 * Open the project in VSCode, run the `import build` task with Metals (it should display a popup automatically).
 
-* Open the terminal, run  below : (The first time it may take a few minutes, because Scala will use "ScalablyTyped" to analyze the types of the VSCode extension API.
-)
-```bash
-sbt compile
-```
-
-open a new VSCode window with the extension loaded:
+* run below command, which will open a new VSCode window with the extension loaded(first time it will take some time for scalable typed to convert typescript to scala.js):
 ```bash
 sbt open
 ```

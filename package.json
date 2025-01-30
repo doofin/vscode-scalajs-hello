@@ -3,9 +3,6 @@
     "displayName": "vscode-scalajs-hello",
     "description": "",
     "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.84.0"
-    },
     "publisher": "test",
     "categories": [
         "Other"
@@ -14,6 +11,12 @@
         "*"
     ],
     "main": "./out/extension",
+    "engines": {
+        "vscode": "^1.84.0"
+    },
+    "dependencies": {
+        "vscode-languageclient": "9.0.1"
+    },
     "contributes": {
         "commands": [
             {

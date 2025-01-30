@@ -7,7 +7,7 @@ import scala.collection.immutable
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
 
-object extension {
+object extensionMain {
 
   /** The main entry for the extension, called when activated first time.
     */
@@ -21,7 +21,13 @@ object extension {
     InlineCompletions.registerInlineCompletions()
 
     // language server client
-    lsp.startLsp()
+    // lsp.startLsp()
+
+    // webview
+    webview.showWebviewPanel()
+
+    // quick pick palette, like command palette
+    quickPick.showQuickPick()
   }
 
 }

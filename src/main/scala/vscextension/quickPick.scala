@@ -6,12 +6,12 @@ import typings.vscode.mod as vscode
 
 import facade.vscodeUtils.*
 
+/** Show a quick pick palette to select items in multiple steps
+  *
+  * similar to the command palette in vscode
+  */
 object quickPick {
 
-  /** Show a quick pick palette to select items in multiple steps
-    *
-    * similar to the command palette in vscode
-    */
   def showQuickPick(): Unit = {
     val items =
       js.Array("item1", "item2", "item3")

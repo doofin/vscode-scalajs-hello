@@ -5,6 +5,9 @@ import typings.vscode.mod as vscode
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
 import facade.vscodeUtils.*
+import scala.concurrent.ExecutionContext.Implicits.global
+
+import typings.vscode.mod.TextEditor
 
 object extensionMain {
 
@@ -12,9 +15,16 @@ object extensionMain {
     */
   @JSExportTopLevel("activate") // Exports the function to javascript so that VSCode can load it
   def activate(context: vscode.ExtensionContext): Unit = {
-    consoleLog("hi,your vscode-scalajs-hello loaded!")
+    showMessageAndLog("congrats, your scala.js vscode extension is loaded")
 
     commands.registerAllCommands(context)
+
+    // show the current languages
+    vscode.window.activeTextEditor.toOption match {
+      case None =>
+      case Some(editor) =>
+        showMessageAndLog("current language: " + editor.document.languageId)
+    }
 
     // register inline completions like github copilot
     InlineCompletions.registerInlineCompletions()
@@ -28,7 +38,7 @@ object extensionMain {
     // quick pick palette, like command palette
     // quickPick.showQuickPick()
 
-    // code actions
+    // code actions like quick fixes
     CodeActions.registerCodeActions(context)
   }
 

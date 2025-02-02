@@ -4,7 +4,8 @@ import typings.vscodeLanguageclient.libCommonClientMod.LanguageClientOptions
 
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
-import vscextension.facade.lspFacade.LanguageClient
+
+import facade.lspFacade.LanguageClient
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/lsp-sample/README.md
 object lsp {

@@ -64,7 +64,7 @@ lazy val root = project
     // scalaJSModuleKind ~= ModuleKind.ESModule
   )
 addCommandAlias("compile", ";fastOptJS")
-
+addCommandAlias("dev", "~fastOptJS")
 /* lazy val installDependencies = Def.task[Unit] {
   val base = (ThisProject / baseDirectory).value
   val log = (ThisProject / streams).value.log

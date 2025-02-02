@@ -6,6 +6,7 @@ import typings.vscode.anon.Dispose
 import scala.collection.immutable
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
+import facade.vscodeUtils.*
 
 object extensionMain {
 
@@ -13,7 +14,7 @@ object extensionMain {
     */
   @JSExportTopLevel("activate") // Exports the function to javascript so that VSCode can load it
   def activate(context: vscode.ExtensionContext): Unit = {
-    println("extension vscode-scalajs-hello loaded!")
+    consoleLog("hi,your vscode-scalajs-hello loaded!")
 
     commands.registerAllCommands(context)
 
@@ -24,10 +25,13 @@ object extensionMain {
     // lsp.startLsp()
 
     // webview
-    webview.showWebviewPanel()
+    // webview.showWebviewPanel()
 
     // quick pick palette, like command palette
-    quickPick.showQuickPick()
+    // quickPick.showQuickPick()
+
+    // code actions
+    CodeActions.registerCodeActions(context)
   }
 
 }

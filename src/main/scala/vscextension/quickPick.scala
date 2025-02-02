@@ -1,9 +1,10 @@
 package vscextension
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import typings.vscode.mod as vscode
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import facade.vscodeUtils.*
 
 object quickPick {
 
@@ -52,7 +53,7 @@ object quickPick {
             .setPlaceHolder("type something")
 
         vscode.window.showInputBox(inputBoxOptions).toFuture.foreach { input =>
-          utils.showMessage("input: " + input)
+          showMessage("input: " + input)
         }
 
       }

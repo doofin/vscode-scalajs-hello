@@ -6,8 +6,9 @@ import scala.collection.immutable
 import scala.scalajs.js
 import scala.scalajs.js.JSConverters.JSRichIterableOnce
 
+// import scala.scalajs.js.
+
 object utils {
-  def showMessage(message: String): Unit = {
-    vscode.window.showInformationMessage(message)
-  }
+
+
 }

@@ -1,9 +1,6 @@
 package vscextension
-import typings.vscodeLanguageclient.mod.BaseLanguageClient
-import typings.vscodeLanguageclient.libCommonClientMod.LanguageClientOptions
 
 import scala.scalajs.js
-import scala.scalajs.js.JSConverters.*
 
 import facade.lspFacade.LanguageClient
 

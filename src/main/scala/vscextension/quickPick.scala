@@ -15,7 +15,7 @@ object quickPick {
   def showQuickPick(): Unit = {
     val items =
       js.Array("item1", "item2", "item3")
-    val options = js.Dynamic.literal(
+    js.Dynamic.literal(
       placeHolder = "pick one item"
     )
 

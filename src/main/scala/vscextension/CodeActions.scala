@@ -1,7 +1,6 @@
 package vscextension
 import typings.vscode.mod as vscode
 import scala.scalajs.js
-import typings.vscode.anon.Dispose
 
 import facade.vscodeUtils.*
 

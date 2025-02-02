@@ -7,6 +7,7 @@ import scala.collection.immutable
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
 
+import facade.vscodeUtils.*
 object commands {
   // Store all the commands here
   def registerAllCommands(context: vscode.ExtensionContext) = {
@@ -16,10 +17,8 @@ object commands {
       )
 
     cmds foreach { (name, fun) =>
-      context.subscriptions.push(
-        vscode.commands
-          .registerCommand(name, fun)
-          .asInstanceOf[Dispose] // to make typescript facades happy
+      context.pushDisposable(
+        vscode.commands.registerCommand(name, fun)
       )
     }
   }

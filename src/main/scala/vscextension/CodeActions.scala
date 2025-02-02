@@ -33,7 +33,7 @@ object CodeActions {
               showMessageAndLog("selected code: " + document.getText(range))
             case _ =>
           }
-          createCodeAction()
+          createCodeAction(document, range, context)
 
           // show an underline for compiler issues
           /* context.diagnostics.map { diagnostic =>
@@ -57,22 +57,29 @@ object CodeActions {
     showMessageAndLog("registered code actions")
   }
 
-  def createCodeAction() = {
-    // create quick fix action item
+  def createCodeAction(document: vscode.TextDocument, range: vscode.Selection, context: vscode.CodeActionContext) = {
 
+    // create quick fix action item
     val codeActionFix1 =
       new vscode.CodeAction(
-        title = "My Code Action",
+        title = "My Code Action- replace with hello",
         kind = vscode.CodeActionKind.QuickFix
       ) {
         isPreferred = true
-        edit = new vscode.WorkspaceEdit()
-        command = vscode
-          .Command(
-            title = "My Code Action",
-            command = "myextension.myCodeAction"
+        edit = new vscode.WorkspaceEdit() {
+          replace(
+            uri = document.uri,
+            range = range,
+            newText = "hello"
           )
-          .setTooltip("This is my code action")
+        }
+        // optional command to run when the code action is selected
+        // command = vscode
+        //   .Command(
+        //     title = "My Code Action",
+        //     command = "myextension.myCodeAction.replaceWithHello"
+        //   )
+        //   .setTooltip("This is my code action")
       }
 
     // the code action for learn more
@@ -84,7 +91,7 @@ object CodeActions {
         command = vscode
           .Command(
             title = "My Code Action",
-            command = "myextension.myCodeAction"
+            command = "myextension.myCodeAction.learnMore"
           )
           .setTooltip("This will show you more information")
       }

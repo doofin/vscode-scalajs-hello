@@ -61,7 +61,7 @@ object CodeActions {
     // create quick fix action item
     val codeActionFix1 =
       new vscode.CodeAction(
-        title = "My Code Action- replace with hello",
+        title = "My Code Action- replace with hello string",
         kind = vscode.CodeActionKind.QuickFix
       ) {
         isPreferred = true

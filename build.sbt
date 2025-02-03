@@ -4,7 +4,7 @@ import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitS
 val outdir = "out" // output directory for the extension
 // open command in sbt
 lazy val open = taskKey[Unit]("open vscode")
-def openVSCodeTask: Def.Initialize[Task[Unit]] =
+def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
   Def
     .task[Unit] {
       val base = (ThisProject / baseDirectory).value
@@ -22,7 +22,10 @@ def openVSCodeTask: Def.Initialize[Task[Unit]] =
         println("\u001b[33m" + "[skipping] dependencies installation" + "\u001b[0m")
       }
       // launch vscode
-      s"code --extensionDevelopmentPath=$path" ! log
+      if (openVscode) {
+        println("\u001b[33m" + "[opening] vscode" + "\u001b[0m")
+        s"code --extensionDevelopmentPath=$path" ! log
+      }
       ()
     }
   // .dependsOn(installDependencies)
@@ -34,6 +37,9 @@ lazy val root = project
     ScalaJSBundlerPlugin,
     ScalablyTypedConverterPlugin
   )
+  .configs(IntegrationTest)
+  .settings(Defaults.itSettings: _*)
+  .settings(inConfig(IntegrationTest)(ScalaJSPlugin.testConfigSettings): _*)
   .settings(
     scalaVersion := "3.3.4",
     // warn unused imports and vars
@@ -44,16 +50,21 @@ lazy val root = project
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "utest" % "0.8.2" % "test"
+      // "com.lihaoyi" %%% "utest" % "0.8.2" % "test",
+      "org.scalameta" %%% "munit" % "0.7.29" % Test
     ),
     Compile / npmDependencies ++=
       Seq(
         "@types/vscode" -> "1.96.0", //
-        "vscode-languageclient" -> "9.0.1" // not working
+        "@types/node-fetch" -> "2.6.0", // compile error for scalablytyped
+        "vscode-languageclient" -> "9.0.1" // working with manuallly created facade
       ),
-    open := openVSCodeTask.dependsOn(Compile / fastOptJS).value,
+    stIgnore ++= List(
+      "@types/node-fetch" // compile error for scalablytyped, so ignore it
+    ),
+    open := openVSCodeTask().dependsOn(Compile / fastOptJS).value
     // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,
-    testFrameworks += new TestFramework("utest.runner.Framework")
+    // testFrameworks += new TestFramework("utest.runner.Framework")
     // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
     // emit ES module like import { Foo } from "bar.js";
     // scalaJSLinkerConfig ~= {

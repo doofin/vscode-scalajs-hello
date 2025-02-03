@@ -29,7 +29,6 @@ def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
       ()
     }
   // .dependsOn(installDependencies)
-
 lazy val root = project
   .in(file("."))
   .enablePlugins(
@@ -41,12 +40,14 @@ lazy val root = project
   .settings(Defaults.itSettings: _*)
   .settings(inConfig(IntegrationTest)(ScalaJSPlugin.testConfigSettings): _*)
   .settings(
+    moduleName := "vscode-scalajs-hello",
     scalaVersion := "3.3.4",
     // warn unused imports and vars
     scalacOptions ++= Seq(
       "-Wunused:all"
     ),
-    moduleName := "vscode-scalajs-hello",
+    // check if it is running in test
+    // testOptions += Tests.Setup(_ => sys.props("testing") = "true"),
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     libraryDependencies ++= Seq(
@@ -59,6 +60,12 @@ lazy val root = project
         "@types/node-fetch" -> "2.6.0", // compile error for scalablytyped
         "vscode-languageclient" -> "9.0.1" // working with manuallly created facade
       ),
+    /* ++ // check if it is running in test
+        (if (sys.props.get("testing") != Some("true"))
+           Seq(
+             "@types/vscode" -> "1.96.0"
+           )
+         else Seq.empty), */
     stIgnore ++= List(
       "@types/node-fetch" // compile error for scalablytyped, so ignore it
     ),

@@ -40,6 +40,9 @@ object extensionMain {
 
     // code actions like quick fixes
     CodeActions.registerCodeActions(context)
+
+    // network requests
+    io.network.httpGet
   }
 
 }

@@ -8,10 +8,16 @@ object NodeFetch {
 
   /** node-fetch is a http client for node.js
     *
-    * from https://github.com/scalajs-io/node-fetch/
+    * https://github.com/node-fetch/node-fetch
+    *
+    * typescript definition: https://github.com/node-fetch/node-fetch/blob/main/%40types/index.d.ts
+    *
+    * scala-js facade from from https://github.com/scalajs-io/node-fetch/
     */
+
   @js.native
-  trait NodeFetch extends js.Object {
+  @JSImport("node-fetch", JSImport.Default)
+  object NodeFetch extends js.Object {
 
     /** Asynchronously executes an HTTP request
       * @param url
@@ -26,12 +32,10 @@ object NodeFetch {
   }
 
   @js.native
-  @JSImport("node-fetch", JSImport.Default)
-  object NodeFetch extends NodeFetch
-
-  @js.native
   trait FetchResponse extends js.Object {
 
+    /** node js readable stream
+      */
     def body: Readable = js.native
 
     def ok: Boolean = js.native
@@ -42,14 +46,9 @@ object NodeFetch {
 
     def headers: Headers = js.native
 
-    /////////////////////////////////////////////////////////////
-    //    Methods
-    /////////////////////////////////////////////////////////////
+    def json(): js.Promise[js.Any] = js.native
 
-    def json(): js.Any = js.native
-
-    def text(): js.Any = js.native
-
+    def text(): js.Promise[String] = js.native
   }
 
   /** Request Options

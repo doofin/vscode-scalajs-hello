@@ -57,7 +57,8 @@ lazy val root = project
     Compile / npmDependencies ++=
       Seq(
         "@types/vscode" -> "1.96.0", //
-        "@types/node-fetch" -> "2.6.0", // compile error for scalablytyped
+        "@types/node" -> "16.11.7", // ts 3.7
+        "@types/node-fetch" -> "2.5.12", // ts 3.7,compile error for scalablytyped
         "vscode-languageclient" -> "9.0.1" // working with manuallly created facade
       ),
     /* ++ // check if it is running in test
@@ -67,7 +68,7 @@ lazy val root = project
            )
          else Seq.empty), */
     stIgnore ++= List(
-      "@types/node-fetch" // compile error for scalablytyped, so ignore it
+      // "@types/node-fetch" // compile error for scalablytyped, so ignore it
     ),
     open := openVSCodeTask().dependsOn(Compile / fastOptJS).value
     // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,

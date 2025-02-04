@@ -15,9 +15,11 @@ referenced:
  - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.
 
 ### Setup
+Requirements:
+ - [Sbt](https://www.scala-sbt.org/download.html)
 
-Steps:
-* Install the extensions to develop: **Metals**
+
+Run the vscode extension:
 * Clone this project
 * Open the project in VSCode, run the `import build` task with Metals (it should display a popup automatically).
 
@@ -26,13 +28,38 @@ Steps:
 sbt open
 ```
 
+After the new VSCode (extension development host) window opens:
 * Run the Hello World command from the Command Palette (`⇧⌘P`) in the new VSCode window.
 * Type `hello` and select `Hello World`.
   * You should see a Notification _Hello World!_.
 
-## Project structure
 
-The project uses the following:
+### Use it as a template
+click on the `Use this template` button to create a new repository with the same structure in github.
+
+### Use it as a library
+You can use this project as a library in your project by adding the following to your `build.sbt`:
+```scala
+resolvers += Resolver.bintrayRepo("jitpack", "https://jitpack.io")
+libraryDependencies += "com.github.pme123" % "vsc" % "main-SNAPSHOT"
+```
+
+
+Note: 
+ - I recommend using the Metals extension for Scala in VSCode.
+ - If you have any issues, please open an issue on this repository.
+
+## Project structure
+The project file structure in src/main/scala is as follows:
+```bash
+src/main/scala
+├── extensionMain
+│   ├── facade // facade for vscode api
+│   ├── io // file and network io functions
+```
+
+
+The project uses the following tools:
 * [SBT] build tool for building the project
 * [Scala.js] for general coding
 * [Scalably Typed] for JavaScript facades

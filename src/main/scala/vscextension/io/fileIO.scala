@@ -1,5 +1,7 @@
 package vscextension.io
 import typings.node.fsMod
+import typings.node.fsMod.PathOrFileDescriptor
+import typings.node.bufferMod.global.BufferEncoding
 
 /** IO utilities for input/output operations, like creating files/folders
   *
@@ -7,7 +9,15 @@ import typings.node.fsMod
   */
 object fileIO {
   def createFile() = {
-    fsMod.mkdirSync("test")
-    fsMod.writeFileSync("test/test.txt", "Hello, World!")
+    val testFolder = "target/test"
+    fsMod.mkdirSync(testFolder)
+    fsMod.writeFileSync(s"$testFolder/helo", "Hello, World!")
+  }
+
+  def readFile(file: String): String = {
+    fsMod.readFileSync(
+      file.asInstanceOf[PathOrFileDescriptor], //
+      BufferEncoding.utf8
+    )
   }
 }

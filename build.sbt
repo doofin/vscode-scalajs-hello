@@ -4,31 +4,7 @@ import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitS
 val outdir = "out" // output directory for the extension
 // open command in sbt
 lazy val open = taskKey[Unit]("open vscode")
-def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
-  Def
-    .task[Unit] {
-      val base = (ThisProject / baseDirectory).value
-      val log = (ThisProject / streams).value.log
 
-      val path = base.getCanonicalPath
-      // install deps to out dir
-      // print info with orange color
-      println("\u001b[33m" + "[copying] package.json to out dir" + "\u001b[0m")
-      s"cp package.json ${outdir}/package.json" ! log
-      if (!(base / outdir / "node_modules").exists) {
-        println("\u001b[33m" + "[installing] dependencies into out dir with npm" + "\u001b[0m")
-        s"npm install --prefix ${outdir}" ! log
-      } else {
-        println("\u001b[33m" + "[skipping] dependencies installation" + "\u001b[0m")
-      }
-      // launch vscode
-      if (openVscode) {
-        println("\u001b[33m" + "[opening] vscode" + "\u001b[0m")
-        s"code --extensionDevelopmentPath=$path" ! log
-      }
-      ()
-    }
-  // .dependsOn(installDependencies)
 lazy val root = project
   .in(file("."))
   .enablePlugins(
@@ -67,23 +43,40 @@ lazy val root = project
              "@types/vscode" -> "1.96.0"
            )
          else Seq.empty), */
-    stIgnore ++= List(
-      // "@types/node-fetch" // compile error for scalablytyped, so ignore it
+    stIgnore ++= List( // don't generate types with scalablytyped
     ),
     open := openVSCodeTask().dependsOn(Compile / fastOptJS).value
     // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,
     // testFrameworks += new TestFramework("utest.runner.Framework")
     // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
-    // emit ES module like import { Foo } from "bar.js";
-    // scalaJSLinkerConfig ~= {
-    //   _.withModuleKind(ModuleKind.ESModule)
-
-    // },
-    // webpackBundlingMode := BundlingMode.LibraryAndApplication()
-    // scalaJSModuleKind ~= ModuleKind.ESModule
   )
 addCommandAlias("compile", ";fastOptJS")
 addCommandAlias("dev", "~fastOptJS")
+
+def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
+  Def
+    .task[Unit] {
+      val base = (ThisProject / baseDirectory).value
+      val log = (ThisProject / streams).value.log
+
+      val path = base.getCanonicalPath
+      // install deps to out dir
+      // print info with orange color
+      println("\u001b[33m" + "[copying] package.json to out dir" + "\u001b[0m")
+      s"cp package.json ${outdir}/package.json" ! log
+      if (!(base / outdir / "node_modules").exists) {
+        println("\u001b[33m" + "[installing] dependencies into out dir with npm" + "\u001b[0m")
+        s"npm install --prefix ${outdir}" ! log
+      } else {
+        println("\u001b[33m" + "[skipping] dependencies installation" + "\u001b[0m")
+      }
+      // launch vscode
+      if (openVscode) {
+        println("\u001b[33m" + "[opening] vscode" + "\u001b[0m")
+        s"code --extensionDevelopmentPath=$path" ! log
+      }
+      ()
+    }
 /* lazy val installDependencies = Def.task[Unit] {
   val base = (ThisProject / baseDirectory).value
   val log = (ThisProject / streams).value.log

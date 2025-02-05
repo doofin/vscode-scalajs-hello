@@ -44,6 +44,8 @@ resolvers += Resolver.bintrayRepo("jitpack", "https://jitpack.io")
 libraryDependencies += "com.github.pme123" % "vsc" % "main-SNAPSHOT"
 ```
 
+You can find the latest version on
+[jitpack.](https://jitpack.io/#doofin/vscode-scalajs-hello)
 
 Note: 
  - I recommend using the Metals extension for Scala in VSCode.

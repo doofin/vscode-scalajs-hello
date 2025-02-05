@@ -16,7 +16,8 @@ lazy val root = project
   .settings(Defaults.itSettings: _*)
   .settings(inConfig(IntegrationTest)(ScalaJSPlugin.testConfigSettings): _*)
   .settings(
-    moduleName := "vscode-scalajs-hello",
+    moduleName := "vscextension",
+    organization := "com.doofin",
     scalaVersion := "3.3.4",
     // warn unused imports and vars
     scalacOptions ++= Seq(

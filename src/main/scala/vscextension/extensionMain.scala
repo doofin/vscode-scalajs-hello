@@ -5,7 +5,6 @@ import typings.vscode.mod as vscode
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
 import facade.vscodeUtils.*
-import scala.concurrent.ExecutionContext.Implicits.global
 
 import typings.vscode.mod.TextEditor
 import _root_.vscextension.facade.vscodeUtils
@@ -46,7 +45,7 @@ object extensionMain {
     io.network.httpGet
 
     // load configuration
-    val projectRoot = vscode.workspace.rootPath.getOrElse("")
+    vscode.workspace.rootPath.getOrElse("")
     val temp = "/home/dhp/work/vscode-scalajs-hello"
     val cfg = io.config.loadConfig(temp + "/.vscode/settings.json")
     vscodeUtils.showMessageAndLog(s"config loaded: $cfg")

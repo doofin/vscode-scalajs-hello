@@ -1,6 +1,5 @@
 package vscextension.io
 
-import vscextension.facade.vscodeUtils
 
 /* load configuration from directory like .vscode/config.json
  *

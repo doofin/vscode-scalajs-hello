@@ -14,7 +14,7 @@ object NodeFetch {
     *
     * scala-js facade from from https://github.com/scalajs-io/node-fetch/
     */
-
+  @deprecated("use scalablyTyped/NodeFetch instead")
   @js.native
   @JSImport("node-fetch", JSImport.Default)
   object NodeFetch extends js.Object {

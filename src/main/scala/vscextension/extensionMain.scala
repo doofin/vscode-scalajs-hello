@@ -42,7 +42,9 @@ object extensionMain {
     CodeActions.registerCodeActions(context)
 
     // network requests
-    io.network.httpGet
+    val url = "https://github.com/"
+    io.network.httpGet(url)
+    io.network.httpGetTyped(url)
 
     // load configuration
     vscode.workspace.rootPath.getOrElse("")

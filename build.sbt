@@ -53,6 +53,7 @@ lazy val root = project
   )
 addCommandAlias("compile", ";fastOptJS")
 addCommandAlias("dev", "~fastOptJS")
+addCommandAlias("fix", ";scalafixEnable;scalafixAll;")
 
 def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
   Def

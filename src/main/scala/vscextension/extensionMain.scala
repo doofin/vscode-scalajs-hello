@@ -53,7 +53,7 @@ object extensionMain {
     io.network.httpGetTyped(url)
 
     // file operations
-    io.fileIO.createFile()
+    io.fileIO.createFile(projectRoot)
     // load configuration
     val cfg = io.config.loadConfig(projectRoot + "/.vscode/settings.json")
     vscodeUtils.showMessageAndLog(s"config loaded: $cfg")

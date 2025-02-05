@@ -11,22 +11,14 @@ import vscextension.facade.vscodeUtils
   * This object contains utilities for IO operations.
   */
 object fileIO {
-  def createFile() = {
+  def createFile(projectRoot: String) = {
     // create folder target/test and file target/test/helo
+    // note: it uses absolute path!
+    val testFolder = "target"
     vscodeUtils.consoleLog("creating file")
-    val testFolder = "target/test"
 
-    // not working,file already exists
-    fsMod.mkdir(
-      "target/test",
-      { err =>
-        if err != null then vscodeUtils.consoleLog("error creating folder: " + err)
-        else vscodeUtils.consoleLog("folder created")
-      }
-    )
-    fsMod.mkdirSync("target")
-    fsMod.mkdirSync(testFolder)
-    fsMod.writeFileSync(s"$testFolder/helo", "Hello, World!")
+    fsMod.mkdirSync(s"$projectRoot/$testFolder")
+    fsMod.writeFileSync(s"$projectRoot/$testFolder/helo", "Hello, World!")
   }
 
   def readFile(file: String): String = {

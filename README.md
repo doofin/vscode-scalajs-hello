@@ -1,41 +1,65 @@
 # VSCode Extension in Scala.js
+Write vscode extensions in Scala.js! This is a collection of examples and templates to get you started, with convenient sbt tasks to build and run your extension.
 
-This is an update of [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
+contains:
+- commands from the vscode command palette
+- inline completion like github copilot
+- language server protocol client
+- code actions (when pressing Alt+Enter at a code location)
 
-
-## Your first Extension
-A step-by-step tutorial for **Scala.js** using this example project.
-
-Here is the original: [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension)
+referenced:
+ - updated from [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
+ - [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
+ - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
+ - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.
+ - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.
 
 ### Setup
+Requirements:
+ - [Sbt](https://www.scala-sbt.org/download.html)
 
-* Install the extensions to develop: **Metals**, **Scala syntax**
 
+Run the vscode extension:
 * Clone this project
-
 * Open the project in VSCode, run the `import build` task with Metals (it should display a popup automatically).
 
-* Open the terminal, run  below : (The first time it may take a few minutes, because Scala will use "ScalablyTyped" to analyze the types of the VSCode extension API.
-)
-```
-sbt compile
-```
-
-
-Below will open a new VSCode window with the extension loaded:
-
-```
+* run below command, which will open a new VSCode window with the extension loaded(first time it will take some time for scalable typed to convert typescript to scala.js):
+```bash
 sbt open
 ```
 
+After the new VSCode (extension development host) window opens:
 * Run the Hello World command from the Command Palette (`⇧⌘P`) in the new VSCode window.
 * Type `hello` and select `Hello World`.
   * You should see a Notification _Hello World!_.
 
-## Project structure
 
-The project uses the following:
+### Use it as a template
+click on the `Use this template` button to create a new repository with the same structure in github.
+
+### Use it as a library
+You can use this project as a library in your project by adding the following to your `build.sbt`:
+```scala
+resolvers += Resolver.bintrayRepo("jitpack", "https://jitpack.io")
+libraryDependencies += "com.github.pme123" % "vsc" % "main-SNAPSHOT"
+```
+
+
+Note: 
+ - I recommend using the Metals extension for Scala in VSCode.
+ - If you have any issues, please open an issue on this repository.
+
+## Project structure
+The project file structure in src/main/scala is as follows:
+```bash
+src/main/scala
+├── extensionMain
+│   ├── facade // facade for vscode api
+│   ├── io // file and network io functions
+```
+
+
+The project uses the following tools:
 * [SBT] build tool for building the project
 * [Scala.js] for general coding
 * [Scalably Typed] for JavaScript facades

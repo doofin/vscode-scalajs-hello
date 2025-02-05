@@ -8,6 +8,8 @@ import facade.vscodeUtils.*
 
 import typings.vscode.mod.TextEditor
 import _root_.vscextension.facade.vscodeUtils
+import typings.std.stdStrings.s
+import typings.std.stdStrings.show
 
 object extensionMain {
 
@@ -19,12 +21,16 @@ object extensionMain {
 
     commands.registerAllCommands(context)
 
-    // show the current languages
+    // show the current language of the document
     vscode.window.activeTextEditor.toOption match {
       case None =>
+        showMessageAndLog("no active editor")
       case Some(editor) =>
         showMessageAndLog("current language: " + editor.document.languageId)
     }
+
+    val projectRoot = vscode.workspace.rootPath.getOrElse("")
+    showMessageAndLog("project root: " + projectRoot)
 
     // register inline completions like github copilot
     InlineCompletions.registerInlineCompletions()
@@ -46,11 +52,12 @@ object extensionMain {
     io.network.httpGet(url)
     io.network.httpGetTyped(url)
 
+    // file operations
+    io.fileIO.createFile()
     // load configuration
-    vscode.workspace.rootPath.getOrElse("")
-    val temp = "/home/dhp/work/vscode-scalajs-hello"
-    val cfg = io.config.loadConfig(temp + "/.vscode/settings.json")
+    val cfg = io.config.loadConfig(projectRoot + "/.vscode/settings.json")
     vscodeUtils.showMessageAndLog(s"config loaded: $cfg")
+
   }
 
 }

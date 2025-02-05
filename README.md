@@ -7,13 +7,6 @@ contains:
 - language server protocol client
 - code actions (when pressing Alt+Enter at a code location)
 
-referenced:
- - updated from [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
- - [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
- - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
- - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.
- - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.
-
 ### Setup
 Requirements:
  - [Sbt](https://www.scala-sbt.org/download.html)
@@ -37,7 +30,15 @@ After the new VSCode (extension development host) window opens:
 ### Use it as a template
 click on the `Use this template` button to create a new repository with the same structure in github.
 
+### Use it as sbt dependency
+In your `build.sbt` add the following:
+```scala
+lazy val vsc = RootProject(uri("https://github.com/doofin/vscode-scalajs-hello.git")) 
+lazy val root = Project("root", file(".")) dependsOn(vsc)
+```
+
 ### Use it as a library
+Currently not working due to jitpack missing npm! 
 You can use this project as a library in your project by adding the following to your `build.sbt`:
 ```scala
 resolvers += Resolver.bintrayRepo("jitpack", "https://jitpack.io")
@@ -100,3 +101,10 @@ vscode.commands.registerCommand(name, fun).asInstanceOf[Dispose]
 ```
 
 You can find more information and tutorials on the [Scala.js website](https://www.scala-js.org/).
+
+# references:
+ - updated from [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
+ - [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
+ - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
+ - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.
+ - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.

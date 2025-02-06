@@ -38,7 +38,7 @@ lazy val root = Project("root", file(".")) dependsOn(vsc)
 ```
 
 ### Use it as a library
-Currently not working due to jitpack missing npm! Welcome to contribute to fix it.
+**Currently not working** due to jitpack missing npm! Welcome to contribute to fix it.
 
 You can use this project as a library in your project by adding the following to your `build.sbt`:
 ```scala

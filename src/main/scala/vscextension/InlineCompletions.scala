@@ -2,9 +2,12 @@ package vscextension
 import typings.vscode.mod as vscode
 
 import scala.scalajs.js
-import scala.scalajs.js.JSConverters.JSRichIterableOnce
+import scala.scalajs.js.JSConverters.*
 
 import facade.vscodeUtils.*
+import scala.concurrent.Future
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /** demonstrates how to provide inline completions in the editor. like the github copilot
   * https://github.com/microsoft/vscode-extension-samples/tree/main/inline-completions
@@ -45,8 +48,13 @@ object InlineCompletions {
             )
           }
 
-        items.toJSArray
+        // return a promise of the items, useful for async
+        val providerResultF =
+          utils.newJsPromise(items.toJSArray)
 
+        providerResultF.asInstanceOf[typings.vscode.mod.ProviderResult[
+          scala.scalajs.js.Array[typings.vscode.mod.InlineCompletionItem] | typings.vscode.mod.InlineCompletionList
+        ]]
       }
 
     }

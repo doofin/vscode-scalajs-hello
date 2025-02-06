@@ -24,7 +24,7 @@ object extensionMain {
     documentProps.showProps
 
     // register inline completions like github copilot
-    InlineCompletions.registerInlineCompletions()
+    inlineCompletions.registerInlineCompletions()
 
     // quick pick palette, like command palette
     // quickPick.showQuickPick()

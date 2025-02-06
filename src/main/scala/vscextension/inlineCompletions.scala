@@ -6,12 +6,11 @@ import scala.scalajs.js.JSConverters.*
 
 import facade.vscodeUtils.*
 
-
 /** demonstrates how to provide inline completions in the editor. like the github copilot
   * https://github.com/microsoft/vscode-extension-samples/tree/main/inline-completions
   * https://github.com/continuedev/continue/blob/main/core/autocomplete/CompletionProvider.ts
   */
-object InlineCompletions {
+object inlineCompletions {
 
   def createCompletionProvider(): vscode.InlineCompletionItemProvider = {
     new vscode.InlineCompletionItemProvider {
@@ -32,13 +31,9 @@ object InlineCompletions {
         // the whole line before the cursor
         showMessage(s"line before cursor: $lineBefore")
 
-        // get the word before the cursor
-        // val word = document.getText(new vscode.Range(position.`with`(0), position))
-        // utils.showMessage(s"word: $word")
-
-        // always return a list of items, only first item will be displayed
+        // always return a list of items, but only first item will be displayed
         val items = List("foo", "bar", "baz")
-          // .filter(_.startsWith(word))
+          // .filter(_.startsWith(word)) // often need to do some filtering
           .map { str =>
             new vscode.InlineCompletionItem(
               insertText = str, // text to insert
@@ -46,7 +41,7 @@ object InlineCompletions {
             )
           }
 
-        // return a promise of the items, useful for async
+        // return a promise of the items, useful for async but not needed here
         val providerResultF =
           jsUtils.newJsPromise(items.toJSArray)
 

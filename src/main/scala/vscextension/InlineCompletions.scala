@@ -48,7 +48,7 @@ object InlineCompletions {
 
         // return a promise of the items, useful for async
         val providerResultF =
-          utils.newJsPromise(items.toJSArray)
+          jsUtils.newJsPromise(items.toJSArray)
 
         providerResultF.asInstanceOf[typings.vscode.mod.ProviderResult[
           scala.scalajs.js.Array[typings.vscode.mod.InlineCompletionItem] | typings.vscode.mod.InlineCompletionList

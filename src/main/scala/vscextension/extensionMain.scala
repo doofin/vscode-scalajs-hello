@@ -1,13 +1,11 @@
 package vscextension
 
-import typings.vscode.mod as vscode
-
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExportTopLevel
-import facade.vscodeUtils.*
 
-import typings.vscode.mod.TextEditor
-import _root_.vscextension.facade.vscodeUtils
+import typings.vscode.mod as vscode
+
+import facade.vscodeUtils.*
 
 object extensionMain {
 
@@ -17,27 +15,16 @@ object extensionMain {
   def activate(context: vscode.ExtensionContext): Unit = {
     showMessageAndLog("congrats, your scala.js vscode extension is loaded")
 
+    val projectRoot = vscode.workspace.rootPath.getOrElse("")
+
+    // register all commands
     commands.registerAllCommands(context)
 
     // show the current language of the document
-    vscode.window.activeTextEditor.toOption match {
-      case None =>
-        showMessageAndLog("no active editor")
-      case Some(editor) =>
-        showMessageAndLog("current language: " + editor.document.languageId)
-    }
-
-    val projectRoot = vscode.workspace.rootPath.getOrElse("")
-    showMessageAndLog("project root: " + projectRoot)
+    documentProps.showProps
 
     // register inline completions like github copilot
     InlineCompletions.registerInlineCompletions()
-
-    // language server client
-    // lsp.startLsp()
-
-    // webview
-    // webview.showWebviewPanel()
 
     // quick pick palette, like command palette
     // quickPick.showQuickPick()
@@ -54,7 +41,13 @@ object extensionMain {
     io.fileIO.createFile(projectRoot)
     // load configuration
     val cfg = io.config.loadConfig(projectRoot + "/.vscode/settings.json")
-    vscodeUtils.showMessageAndLog(s"config loaded: $cfg")
+    showMessageAndLog(s"config loaded: $cfg")
+
+    // language server client
+    // lsp.startLsp()
+
+    // webview
+    // webview.showWebviewPanel()
 
   }
 

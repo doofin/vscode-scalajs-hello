@@ -1,11 +1,10 @@
 package vscextension
 
-
 import scala.scalajs.js
 
 // import scala.scalajs.js.Thenable.Implicits._
 
-object utils {
+object jsUtils {
 
   /** creates a new js promise
     *

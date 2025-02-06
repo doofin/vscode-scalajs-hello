@@ -38,11 +38,12 @@ lazy val root = Project("root", file(".")) dependsOn(vsc)
 ```
 
 ### Use it as a library
-Currently not working due to jitpack missing npm! 
+Currently not working due to jitpack missing npm! Welcome to contribute to fix it.
+
 You can use this project as a library in your project by adding the following to your `build.sbt`:
 ```scala
 resolvers += Resolver.bintrayRepo("jitpack", "https://jitpack.io")
-libraryDependencies += "com.github.pme123" % "vsc" % "main-SNAPSHOT"
+libraryDependencies += "com.github.doofin" % "vscode-scalajs-hello" % "master-SNAPSHOT" // might be wrong
 ```
 
 You can find the latest version on
@@ -56,7 +57,8 @@ Note:
 The project file structure in src/main/scala is as follows:
 ```bash
 src/main/scala
-├── extensionMain
+├── extensionMain.scala // main entry point for the extension
+├── commands.scala, codeActions.scala,etc // files for different extension features
 │   ├── facade // facade for vscode api
 │   ├── io // file and network io functions
 ```
@@ -77,26 +79,27 @@ SBT is configured with the `build.sbt` file. Scala.js, ScalablyTyped and the bun
 [ScalaJS]: http://www.scala-js.org
 [scalajs-bundler]: https://github.com/scalacenter/scalajs-bundler
 
-## How do I code in Scala.js?
+## How to code in Scala js?
 
 In general, javascript functions and classes can be used in the same way as in JS/TS!
 If the typechecker disagrees, you can insert casts with `.asInstanceOf[Type]`.
 
-The JS types (like `js.Array`) are available with
+The JS types (like `js.Array`) are available from
 ```scala
 import scala.scalajs.js
 ```
 
-The VSCode classes and functions are available with
+The VSCode classes and functions are available from
 ```scala
 import typings.vscode.mod as vscode
-// to use:
-vscode.function(arg)
+
+vscode.window.showInformationMessage("Hello World!")
 ```
 
 Some additional types are available in the `anon` subpackage, for example:
 ```scala
 import typings.vscode.anon.Dispose
+// register a command. The cast is necessary due to typescript conversion limitations.
 vscode.commands.registerCommand(name, fun).asInstanceOf[Dispose]
 ```
 

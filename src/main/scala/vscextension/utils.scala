@@ -1,8 +1,6 @@
 package vscextension
 
-import scala.concurrent.Future
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 
 // import scala.scalajs.js.Thenable.Implicits._

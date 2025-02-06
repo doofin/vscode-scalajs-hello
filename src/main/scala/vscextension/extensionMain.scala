@@ -8,8 +8,6 @@ import facade.vscodeUtils.*
 
 import typings.vscode.mod.TextEditor
 import _root_.vscextension.facade.vscodeUtils
-import typings.std.stdStrings.s
-import typings.std.stdStrings.show
 
 object extensionMain {
 

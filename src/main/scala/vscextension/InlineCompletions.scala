@@ -5,9 +5,7 @@ import scala.scalajs.js
 import scala.scalajs.js.JSConverters.*
 
 import facade.vscodeUtils.*
-import scala.concurrent.Future
 
-import scala.concurrent.ExecutionContext.Implicits.global
 
 /** demonstrates how to provide inline completions in the editor. like the github copilot
   * https://github.com/microsoft/vscode-extension-samples/tree/main/inline-completions

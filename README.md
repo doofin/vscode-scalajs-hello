@@ -111,3 +111,10 @@ You can find more information and tutorials on the [Scala.js website](https://ww
  - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
  - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.
  - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.
+
+# contribute
+
+Welcome to contribute to this project! Here are some ideas:
+- Add more examples for vscode extension features.
+- Add github actions for automatic release 
+- Add proper test framework and tests for the extension

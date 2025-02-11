@@ -49,6 +49,9 @@ object extensionMain {
     // webview
     // webview.showWebviewPanel()
 
+    // show an icon in the status bar at the bottom
+    statusBar.createStatusBarItem(context)
+
   }
 
 }

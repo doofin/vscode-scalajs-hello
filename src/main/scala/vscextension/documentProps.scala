@@ -10,6 +10,12 @@ object documentProps {
   /** Shows various properties of the current document and editor
     *
     * like the language of the document, the project root, etc.
+    *
+    * also the programing features like symbols, references, def
+    *
+    * https://code.visualstudio.com/api/references/commands
+    *
+    * https://code.visualstudio.com/api/extension-guides/command
     */
   def showProps = {
     vscode.window.activeTextEditor.toOption match {

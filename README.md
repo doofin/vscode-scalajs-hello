@@ -7,7 +7,7 @@ contains:
 - language server protocol client
 - code actions (when pressing Alt+Enter at a code location)
 
-### Setup
+## Setup
 Requirements:
  - [Sbt](https://www.scala-sbt.org/download.html)
 
@@ -26,7 +26,19 @@ After the new VSCode (extension development host) window opens:
 * Type `hello` and select `Hello World`.
   * You should see a Notification _Hello World!_.
 
+## build and package
+To build the project, you need to have [sbt](https://www.scala-sbt.org/) installed. You can run the following command in the root directory of the project:
+```bash
+sbt fastOptJS
+```
+This will compile the Scala code and generate the JavaScript files in the `out` directory.
 
+
+To package the extension to a .vsix file, run the following command in the root directory of the project after running `sbt fastOptJS`:
+```bash
+cd out &&  npx vsce package
+```
+## Usage
 ### Use it as a template
 click on the `Use this template` button to create a new repository with the same structure in github.
 

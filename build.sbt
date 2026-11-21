@@ -18,7 +18,7 @@ lazy val root = project
   .settings(
     moduleName := "vscextension",
     organization := "com.doofin",
-    scalaVersion := "3.3.4",
+    scalaVersion := "3.3.9",
     // warn unused imports and vars
     scalacOptions ++= Seq(
       "-Wunused:all"
@@ -36,7 +36,7 @@ lazy val root = project
         "@types/vscode" -> "1.96.0", //
         "@types/node" -> "16.11.7", // ts 3.7
         "@types/node-fetch" -> "2.5.12", // ts 3.7,compile error for scalablytyped
-        "@vscode/prompt-tsx"->"0.3.0-alpha.18",
+        "@vscode/prompt-tsx" -> "0.3.0-alpha.18",
         "vscode-languageclient" -> "9.0.1" // working with manuallly created facade
       ),
     /* ++ // check if it is running in test

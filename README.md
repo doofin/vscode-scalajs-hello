@@ -9,7 +9,8 @@ contains:
 
 ## Setup
 Requirements:
- - [Sbt](https://www.scala-sbt.org/download.html)
+ - Sbt: (https://www.scala-sbt.org/download.html)
+ - npm, nodejs
 
 
 Run the vscode extension:

@@ -32,6 +32,9 @@ object extensionMain {
     // code actions like quick fixes
     CodeActions.registerCodeActions(context)
 
+    // semantic syntax highlighting for TODO markers in Scala files
+    SyntaxHighlighting.register(context)
+
     // network requests
     val url = "https://github.com/"
     io.network.httpGet(url)

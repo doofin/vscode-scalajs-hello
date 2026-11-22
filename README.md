@@ -39,6 +39,13 @@ To package the extension to a .vsix file, run the following command in the root 
 ```bash
 cd out &&  npx vsce package
 ```
+
+## Testing
+
+Run the MUnit tests with `sbt test`. They compile to JavaScript and run under Node.js. The VS Code runtime module `vscode` is provided by the extension host, not by the `@types/vscode` typings in `build.sbt`, so tests that load extension code can fail under Node with `Cannot find module 'vscode'`. The extension host is available when launching the development window with `sbt open`.
+
+For tests that need VS Code APIs, use an extension-host test runner. The [Agda extension](https://github.com/banacorn/agda-mode-vscode) launches VS Code with `@vscode/test-electron`; [Metals](https://github.com/scalameta/metals-vscode) separates Node unit tests from extension-host tests. Keep pure logic in unit tests and test VS Code integration in the host.
+
 ## Usage
 ### Use it as a template
 click on the `Use this template` button to create a new repository with the same structure in github.
@@ -130,4 +137,4 @@ You can find more information and tutorials on the [Scala.js website](https://ww
 Welcome to contribute to this project! Here are some ideas:
 - Add more examples for vscode extension features.
 - Add github actions for automatic release 
-- Add proper test framework and tests for the extension
+- Add extension-host integration tests.

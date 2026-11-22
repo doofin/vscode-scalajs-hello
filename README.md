@@ -126,7 +126,7 @@ vscode.commands.registerCommand(name, fun).asInstanceOf[Dispose]
 You can find more information and tutorials on the [Scala.js website](https://www.scala-js.org/).
 
 # references:
- - updated from [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
+ - original [vscode-scalajs-hello](https://github.com/pme123/vscode-scalajs-hello) with Scala 3.3.3 and sbt.version=1.9.7.
  - [VSCode Extension Samples](https://github.com/microsoft/vscode-extension-samples) repository.
  - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
  - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.

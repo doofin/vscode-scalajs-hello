@@ -1,9 +1,10 @@
-package-lock.json
-
-# Logs
+# Misc, reference files, logs
+src-ref/ 
 logs
 *.log
 
+# js and Node.js related files
+package-lock.json
 node_modules
 dist
 dist-ssr

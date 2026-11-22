@@ -23,8 +23,8 @@ object SyntaxHighlighting {
       js.Array("keyword"),
       js.Array[String]()
     )
-    val provider = new js.Object {
-      def provideDocumentSemanticTokens(
+    val provider = new vscode.DocumentSemanticTokensProvider {
+      override def provideDocumentSemanticTokens(
           document: vscode.TextDocument,
           token: vscode.CancellationToken
       ): vscode.SemanticTokens = {
@@ -38,7 +38,7 @@ object SyntaxHighlighting {
         }
         builder.build()
       }
-    }.asInstanceOf[vscode.DocumentSemanticTokensProvider]
+    }
 
     val registration = vscode.languages.registerDocumentSemanticTokensProvider(
       selector = "scala",

@@ -1,4 +1,5 @@
 # This script check the required commands and installs necessary npm packages
+
 # Check if npm and node are installed
 if ! command -v npm &> /dev/null
 then
@@ -12,6 +13,5 @@ then
     exit
 fi
 
-# Install required npm packages in the project directory
-npm install node-fetch
-npm install --save-dev @types/vscode@1.96.0
+# run npm install to install required packages in package.json
+npm install

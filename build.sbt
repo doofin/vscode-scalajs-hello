@@ -4,6 +4,7 @@ import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitS
 val outdir = "out" // output directory for the extension
 // open command in sbt
 lazy val open = taskKey[Unit]("open vscode")
+lazy val prepareExtension = taskKey[Unit]("prepare extension output")
 
 lazy val root = project
   .in(file("."))
@@ -38,6 +39,7 @@ lazy val root = project
         "@types/node-fetch" -> "2.5.12", // ts 3.7,compile error for scalablytyped
         "@vscode/prompt-tsx" -> "0.3.0-alpha.18",
         "vscode-languageclient" -> "9.0.1" // working with manuallly created facade
+        // https://github.com/microsoft/vscode-languageserver-node/tree/release/client/9.0.1
       ),
     /* ++ // check if it is running in test
         (if (sys.props.get("testing") != Some("true"))
@@ -47,7 +49,8 @@ lazy val root = project
          else Seq.empty), */
     stIgnore ++= List( // don't generate types with scalablytyped
     ),
-    open := openVSCodeTask().dependsOn(Compile / fastOptJS).value
+    prepareExtension := prepareExtensionTask().value,
+    open := openVSCodeTask().dependsOn(Compile / fastOptJS, prepareExtension).value
     // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,
     // testFrameworks += new TestFramework("utest.runner.Framework")
     // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
@@ -63,23 +66,44 @@ def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
       val log = (ThisProject / streams).value.log
 
       val path = base.getCanonicalPath
-      // install deps to out dir
-      // print info with orange color
-      println("\u001b[33m" + "[copying] package.json to out dir" + "\u001b[0m")
-      s"cp package.json ${outdir}/package.json" ! log
-      if (!(base / outdir / "node_modules").exists) {
-        println("\u001b[33m" + "[installing] dependencies into out dir with npm" + "\u001b[0m")
-        s"npm install --prefix ${outdir}" ! log
-      } else {
-        println("\u001b[33m" + "[skipping] dependencies installation" + "\u001b[0m")
-      }
       // launch vscode
       if (openVscode) {
-        println("\u001b[33m" + "[opening] vscode" + "\u001b[0m")
+        mLog("[opening] vscode")
         s"code --extensionDevelopmentPath=$path" ! log
       }
       ()
     }
+
+def mLog(message: String): Unit = println(s"\u001b[33m[log] ${message}\u001b[0m")
+
+def prepareExtensionTask(): Def.Initialize[Task[Unit]] =
+  Def.task[Unit] {
+    val base = (ThisProject / baseDirectory).value
+    val log = (ThisProject / streams).value.log
+    val output = base / outdir
+
+    IO.createDirectory(output / "server")
+    IO.copyFile(base / "package.json", output / "package.json")
+    IO.copyFile(base / "server" / "server.js", output / "server" / "server.js")
+    mLog(s"Copied server.js to output directory: ${output.getAbsolutePath}")
+
+    def run(command: Seq[String]): Unit = {
+      val exitCode = Process(command, base).!(log)
+      if (exitCode != 0) sys.error(s"Command failed ($exitCode): ${command.mkString(" ")}")
+    }
+
+    run(Seq("npm", "pkg", "set", "main=./extension", "--prefix", output.getAbsolutePath))
+    run(
+      Seq(
+        "npm",
+        "install",
+        "--prefix",
+        output.getAbsolutePath,
+        "--no-audit",
+        "--no-fund"
+      )
+    )
+  }
 /* lazy val installDependencies = Def.task[Unit] {
   val base = (ThisProject / baseDirectory).value
   val log = (ThisProject / streams).value.log

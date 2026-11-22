@@ -3,6 +3,7 @@ package vscextension.io
 import typings.node.fsMod
 import typings.node.fsMod.PathOrFileDescriptor
 import typings.node.bufferMod.global.BufferEncoding
+import typings.node.anon.MakeDirectoryOptionsrecur
 
 import vscextension.facade.vscodeUtils
 
@@ -17,7 +18,10 @@ object fileIO {
     val testFolder = "target"
     vscodeUtils.consoleLog("creating file")
 
-    fsMod.mkdirSync(s"$projectRoot/$testFolder")
+    fsMod.mkdirSync(
+      s"$projectRoot/$testFolder",
+      MakeDirectoryOptionsrecur().setRecursive(true)
+    )
     fsMod.writeFileSync(s"$projectRoot/$testFolder/helo", "Hello, World!")
   }
 

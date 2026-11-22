@@ -1,41 +1,35 @@
-# VSCode Extension in Scala.js
-Write vscode extensions in Scala.js! This is a collection of examples and templates to get you started, with convenient sbt tasks to build and run your extension.
+# VS Code extensions with Scala.js
 
-contains:
-- commands from the vscode command palette
-- inline completion like github copilot
-- language server protocol client
-- code actions (when pressing Alt+Enter at a code location)
+Build VS Code extensions in Scala.js. This repository includes examples :
+- commands
+- inline completions
+- code actions
+- language-client integration (plaintext completions and uppercase-word diagnostics)
+- syntax highlighting
 
-## Setup
-Requirements:
- - Sbt: (https://www.scala-sbt.org/download.html)
- - npm, nodejs
+WIP:
+- language configuration(Comment toggling,Brackets definition,etc)
+## Get started
 
+Requirements: [Node.js/npm](https://nodejs.org/) and [sbt](https://www.scala-sbt.org/).
 
-Run the vscode extension:
-* Clone this project
-* Open the project in VSCode, run the `import build` task with Metals (it should display a popup automatically).
+1. Clone the repository and open it in VS Code. Let Metals import the sbt build.
+2. Run `sbt open` in the project root. This compiles the extension and opens a
+   VS Code Extension Development Host. The first run may take a while.
+3. In the new window, open the Command Palette, run **Hello World**, and
+   confirm the notification appears.
+4. To try the language server, open a Plain Text document, type `AAA`, and
+   confirm the warning appears. Request completion to see TypeScript and
+   JavaScript suggestions.
 
-* run below command, which will open a new VSCode window with the extension loaded(first time it will take some time for scalable typed to convert typescript to scala.js):
+## Build and package
+
+Compile the extension and prepare its language server:
 ```bash
-sbt open
+sbt fastOptJS prepareExtension
 ```
 
-After the new VSCode (extension development host) window opens:
-* Run the Hello World command from the Command Palette (`⇧⌘P`) in the new VSCode window.
-* Type `hello` and select `Hello World`.
-  * You should see a Notification _Hello World!_.
-
-## build and package
-To build the project, you need to have [sbt](https://www.scala-sbt.org/) installed. You can run the following command in the root directory of the project:
-```bash
-sbt fastOptJS
-```
-This will compile the Scala code and generate the JavaScript files in the `out` directory.
-
-
-To package the extension to a .vsix file, run the following command in the root directory of the project after running `sbt fastOptJS`:
+To create a `.vsix` package:
 ```bash
 cd out &&  npx vsce package
 ```
@@ -79,7 +73,7 @@ The project file structure in src/main/scala is as follows:
 src/main/scala
 ├── extensionMain.scala // main entry point for the extension
 ├── commands.scala, codeActions.scala,etc // files for different extension features
-│   ├── facade // facade for vscode api
+│   ├── facade // facade for extra vscode api
 │   ├── io // file and network io functions
 ```
 

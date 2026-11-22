@@ -18,8 +18,9 @@ object vscodeUtils {
     js.Dynamic.global.console.log(message)
   }
 
-  def showMessageAndLog(message: String): Unit = {
-    showMessage(message)
-    consoleLog(message)
+  def showMessageAndLog(message: String, name: String = ""): Unit = {
+    val msg = s"[scalajsVS:$name] $message"
+    showMessage(msg)
+    consoleLog(msg)
   }
 }

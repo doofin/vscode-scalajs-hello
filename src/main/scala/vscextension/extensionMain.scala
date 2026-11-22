@@ -15,8 +15,6 @@ object extensionMain {
   def activate(context: vscode.ExtensionContext): Unit = {
     showMessageAndLog("congrats, your scala.js vscode extension is loaded")
 
-    val projectRoot = vscode.workspace.rootPath.getOrElse("")
-
     // register all commands
     commands.registerAllCommands(context)
 
@@ -40,14 +38,14 @@ object extensionMain {
     io.network.httpGet(url)
     io.network.httpGetTyped(url)
 
-    // file operations
-    io.fileIO.createFile(projectRoot)
-    // load configuration
-    val cfg = io.config.loadConfig(projectRoot + "/.vscode/settings.json")
-    showMessageAndLog(s"config loaded: $cfg")
+    vscode.workspace.rootPath.foreach { projectRoot =>
+      io.fileIO.createFile(projectRoot)
+      val cfg = io.config.loadConfig(projectRoot + "/.vscode/settings.json")
+      showMessageAndLog(s"config loaded: $cfg")
+    }
 
-    // language server client
-    // lsp.startLsp()
+    // language server client sample
+    lsp.start(context)
 
     // webview
     // webview.showWebviewPanel()

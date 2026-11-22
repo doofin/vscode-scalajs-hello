@@ -30,7 +30,7 @@ object network {
       case Success(res) =>
         val body = res.text().toFuture foreach { body =>
           // the body of the response
-          showMessageAndLog(s"using manual facade: $body")
+          // showMessageAndLog(s"using manual facade: ${body.take(10)}..", "network")
         }
       case Failure(e) =>
         showMessageAndLog(e.toString)
@@ -52,7 +52,7 @@ object network {
       case Success(res) =>
         val body = res.text().toFuture foreach { body =>
           // the body of the response
-          showMessageAndLog(s"using scalablytyped: $body")
+          showMessageAndLog(s"using scalablytyped: ${body.take(10)}..", "network")
         }
       case Failure(e) =>
         showMessageAndLog(e.toString)

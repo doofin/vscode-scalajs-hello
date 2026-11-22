@@ -4,8 +4,27 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
 import typings.vscode.mod as vscode
+import scala.annotation.unused
 
-object languageClientAPI {
+object vsLanguageClient {
+  @js.native
+  @JSImport("vscode-languageclient/node", "LanguageClient")
+  class LanguageClient(
+      @unused id: String,
+      @unused name: String,
+      @unused serverOptions: ServerOptions,
+      @unused clientOptions: LanguageClientOptions
+  ) extends js.Object {
+    def start(): js.Promise[Unit] = js.native
+    def stop(): js.Promise[Unit] = js.native
+    def setTrace(value: Int): js.Promise[Unit] = js.native
+    def sendRequest(method: String, params: js.Any): js.Promise[js.Dynamic] = js.native
+    def onRequest(
+        method: String,
+        handler: js.Function1[js.Dynamic, js.Promise[Null]]
+    ): vscode.Disposable = js.native
+  }
+
   @js.native
   @JSImport("vscode-languageclient/node", "TransportKind")
   object TransportKind extends js.Object {
@@ -31,53 +50,47 @@ object languageClientAPI {
 
   @js.native
   trait ServerOptions extends js.Object {
-    val run: NodeModule = js.native
-    val debug: NodeModule = js.native
+    val run: js.Any = js.native
+    val debug: js.Any = js.native
   }
 
   object ServerOptions {
-    def apply(run: NodeModule, debug: NodeModule): ServerOptions =
+    def apply(run: js.Any, debug: js.Any): ServerOptions =
       js.Dynamic.literal(run = run, debug = debug).asInstanceOf[ServerOptions]
   }
 
   object DocumentFilter {
-    def plainTextFile: vscode.DocumentFilter =
-      js.Dynamic.literal(scheme = "file", language = "plaintext")
+    def apply(scheme: String, language: String): vscode.DocumentFilter = {
+      js.Dynamic
+        .literal(scheme = scheme, language = language)
         .asInstanceOf[vscode.DocumentFilter]
+    }
+
   }
 
   @js.native
   trait LanguageClientOptions extends js.Object {
     val documentSelector: js.Array[vscode.DocumentFilter] = js.native
     val outputChannel: vscode.OutputChannel = js.native
-    val traceOutputChannel: vscode.OutputChannel = js.native
+    val traceOutputChannel: js.UndefOr[vscode.OutputChannel] = js.native
+    val initializationOptions: js.UndefOr[js.Any] = js.native
   }
 
   object LanguageClientOptions {
     def apply(
         documentSelector: js.Array[vscode.DocumentFilter],
         outputChannel: vscode.OutputChannel,
-        traceOutputChannel: vscode.OutputChannel
+        traceOutputChannel: js.UndefOr[vscode.OutputChannel] = js.undefined,
+        initializationOptions: js.UndefOr[js.Any] = js.undefined
     ): LanguageClientOptions =
       js.Dynamic
         .literal(
           documentSelector = documentSelector,
           outputChannel = outputChannel,
-          traceOutputChannel = traceOutputChannel
+          traceOutputChannel = traceOutputChannel,
+          initializationOptions = initializationOptions
         )
         .asInstanceOf[LanguageClientOptions]
   }
 
-  @js.native
-  @JSImport("vscode-languageclient/node", "LanguageClient")
-  class LanguageClient(
-      id: String,
-      name: String,
-      serverOptions: ServerOptions,
-      clientOptions: LanguageClientOptions
-  ) extends js.Object {
-    def start(): js.Promise[Unit] = js.native
-    def stop(): js.Promise[Unit] = js.native
-    def setTrace(value: Int): js.Promise[Unit] = js.native
-  }
 }

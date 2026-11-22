@@ -4,7 +4,7 @@ import scala.scalajs.js
 
 import typings.vscode.mod as vscode
 
-import facade.languageClientAPI.{
+import facade.vsLanguageClient.{
   DocumentFilter,
   LanguageClient,
   LanguageClientOptions,
@@ -34,7 +34,7 @@ object lsp {
     )
 
     val clientOptions = LanguageClientOptions(
-      documentSelector = js.Array(DocumentFilter.plainTextFile),
+      documentSelector = js.Array(DocumentFilter("file", "plaintext")),
       outputChannel = outputChannel,
       traceOutputChannel = outputChannel
     )

@@ -35,6 +35,7 @@ lazy val root = project
     Compile / npmDependencies ++=
       Seq(
         "@types/vscode" -> "1.96.0", //
+        "@vscode/test-cli" -> "0.0.15", // for integration tests
         "@types/node" -> "16.11.7", // ts 3.7
         "@types/node-fetch" -> "2.5.12", // ts 3.7,compile error for scalablytyped
         "@vscode/prompt-tsx" -> "0.3.0-alpha.18",

@@ -36,9 +36,12 @@ cd out &&  npx vsce package
 
 ## Testing
 
-Run the MUnit tests with `sbt test`. They compile to JavaScript and run under Node.js. The VS Code runtime module `vscode` is provided by the extension host, not by the `@types/vscode` typings in `build.sbt`, so tests that load extension code can fail under Node with `Cannot find module 'vscode'`. The extension host is available when launching the development window with `sbt open`.
+Run the Scala.js extension-host integration test with `npm test`. It checks
+that the extension activates and registers the Hello World command. The first
+run downloads VS Code Stable.
 
-For tests that need VS Code APIs, use an extension-host test runner. The [Agda extension](https://github.com/banacorn/agda-mode-vscode) launches VS Code with `@vscode/test-electron`; [Metals](https://github.com/scalameta/metals-vscode) separates Node unit tests from extension-host tests. Keep pure logic in unit tests and test VS Code integration in the host.
+Use `sbt test` for MUnit unit tests. For details on the Scala.js integration
+test setup, see [docs/test-scalajs.md](./docs/test-scalajs.md).
 
 ## Usage
 ### Use it as a template

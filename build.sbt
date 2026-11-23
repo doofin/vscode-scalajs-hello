@@ -17,6 +17,7 @@ lazy val root = project
   .settings(Defaults.itSettings: _*)
   .settings(inConfig(IntegrationTest)(ScalaJSPlugin.testConfigSettings): _*)
   .settings(
+    IntegrationTest / sourceDirectory := baseDirectory.value / "src" / "inteTest",
     moduleName := "vscextension",
     organization := "com.doofin",
     scalaVersion := "3.3.9",
@@ -28,6 +29,10 @@ lazy val root = project
     // testOptions += Tests.Setup(_ => sys.props("testing") = "true"),
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
+    IntegrationTest / mainClass := Some("vscextension.IntegrationTestMain"),
+    IntegrationTest / scalaJSUseTestModuleInitializer := false,
+    IntegrationTest / scalaJSUseMainModuleInitializer := true,
+    IntegrationTest / fastOptJS / artifactPath := baseDirectory.value / outdir / "test" / "extension.test.js",
     libraryDependencies ++= Seq(
       // "com.lihaoyi" %%% "utest" % "0.8.2" % "test",
       "org.scalameta" %%% "munit" % "0.7.29" % Test
@@ -35,7 +40,6 @@ lazy val root = project
     Compile / npmDependencies ++=
       Seq(
         "@types/vscode" -> "1.96.0", //
-        "@vscode/test-cli" -> "0.0.15", // for integration tests
         "@types/node" -> "16.11.7", // ts 3.7
         "@types/node-fetch" -> "2.5.12", // ts 3.7,compile error for scalablytyped
         "@vscode/prompt-tsx" -> "0.3.0-alpha.18",
@@ -84,6 +88,7 @@ def prepareExtensionTask(): Def.Initialize[Task[Unit]] =
     val output = base / outdir
 
     IO.createDirectory(output / "server")
+    IO.createDirectory(output / "test")
     IO.copyFile(base / "package.json", output / "package.json")
     IO.copyFile(base / "server" / "server.js", output / "server" / "server.js")
     mLog(s"Copied server.js to output directory: ${output.getAbsolutePath}")

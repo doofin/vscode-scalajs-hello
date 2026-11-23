@@ -6,6 +6,7 @@ logs
 # js and Node.js related files
 package-lock.json
 node_modules
+.vscode-test/
 dist
 dist-ssr
 *.local

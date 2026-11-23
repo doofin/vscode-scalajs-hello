@@ -45,3 +45,54 @@ Possible Scala.js approach:
 4. Add `.vscode-test.mjs` with `defineConfig` and set `files` to the compiled
    `out/test/**/*.test.js` from Scala.js code. Add an npm script for `vscode-test`.
 5. run `npm test` 
+
+## implementation results:
+
+The extension-host smoke test is written in Scala.js. `@vscode/test-cli`
+launches VS Code and Mocha loads the JavaScript generated from that Scala.js
+test. The test itself uses Scala.js and the generated VS Code facades; the
+JavaScript `.vscode-test.mjs` file only configures test discovery.
+
+The desktop runner requires both `@vscode/test-cli` and
+`@vscode/test-electron` as development dependencies.
+
+## Test source and runner
+
+- [`IntegrationTestMain.scala`](../src/inteTest/scala/vscextension/IntegrationTestMain.scala)
+  registers a Mocha TDD suite and checks that the extension activates and
+  registers `extension.helloWorld`.
+- The `IntegrationTest` configuration compiles the Scala.js test with a main
+  module initializer to `out/test/extension.test.js`.
+- [`.vscode-test.mjs`](../.vscode-test.mjs) tells the CLI to load that compiled
+  test module.
+- MUnit tests remain separate and continue to use `sbt test`.
+
+The integration test uses the `IntegrationTest` configuration rather than
+`Test`: Scala.js reserves the `Test` module initializer for its MUnit runner.
+The integration configuration disables that test initializer and enables the
+main initializer so loading the generated file registers the Mocha suite.
+
+## Run
+
+From the project root:
+
+```bash
+npm test
+```
+
+The npm `pretest` script runs `sbt fastOptJS prepareExtension` and
+`IntegrationTest / fastOptJS` before launching VS Code. On the first run,
+`@vscode/test-electron` downloads VS Code Stable. The smoke test should report
+one passing test.
+
+To run the build steps separately:
+
+```bash
+sbt fastOptJS prepareExtension 'IntegrationTest / fastOptJS'
+npx vscode-test
+```
+
+The CLI uses Mocha's TDD interface (`suite`/`test`). Keep integration assertions
+in Scala.js; add only test-runner configuration or loading glue in JavaScript if
+needed. Use MUnit for pure Scala.js unit tests, and the extension host for tests
+that need VS Code APIs.

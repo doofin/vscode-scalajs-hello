@@ -1,13 +1,9 @@
 package vscextension
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.scalajs.js
-import scala.scalajs.js.JSConverters.*
-import scala.scalajs.js
-
-import typings.vscode.Thenable
 import typings.vscode.mod as vscode
 import vscextension.facade.vscodeUtils.consoleLog
+
+import scala.scalajs.js
 
 import Mocha.*
 

@@ -1,36 +1,36 @@
 package vscextension
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.scalajs.js
+import scala.scalajs.js.JSConverters.*
 import scala.scalajs.js
 
 import typings.vscode.Thenable
 import typings.vscode.mod as vscode
+import vscextension.facade.vscodeUtils.consoleLog
+import munit.FunSuite
+import Mocha.*
 
+/** The main entry for integration test, via Mocha framework. Munit tests are also supported but
+  * require additional setup
+  */
 object IntegrationTestMain {
   def main(args: Array[String]): Unit = {
-    val suite: js.Function0[Unit] = () => {
-      val test: js.Function0[Thenable[Unit]] = { () =>
-        val extension =
-          vscode.extensions.getExtension[js.Any]("test.vscode-scalajs-hello")
-        assert(extension.isDefined, "Scala.js extension was not found")
+    mochaTest1.test1()
 
-        extension.get
-          .activate()
-          .`then`((_: js.Any) =>
-            vscode.commands
-              .getCommands()
-              .`then`((commands: js.Array[String]) => {
-                assert(
-                  commands.contains("extension.helloWorld"),
-                  "Hello World command was not registered"
-                )
-              })
-          )
-      }
+    // integration tests for Munit
+    execMunitTests(new munitTest1)
 
-      js.Dynamic.global.test("activates and registers Hello World", test)
-      ()
-    }
-
-    js.Dynamic.global.suite("Scala.js extension integration", suite)
   }
+
+  def execMunitTests(munitSuite: FunSuite): Unit = {
+    suite("Munit extension integration") { () =>
+      munitSuite.munitTests().foreach { t =>
+        test(t.name) { () =>
+          t.body().map(_ => ()).toJSPromise
+        }
+      }
+    }
+  }
+
 }

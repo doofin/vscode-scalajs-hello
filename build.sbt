@@ -34,8 +34,8 @@ lazy val root = project
     IntegrationTest / scalaJSUseMainModuleInitializer := true,
     IntegrationTest / fastOptJS / artifactPath := baseDirectory.value / outdir / "test" / "extension.test.js",
     libraryDependencies ++= Seq(
-      // "com.lihaoyi" %%% "utest" % "0.8.2" % "test",
-      "org.scalameta" %%% "munit" % "0.7.29" % Test
+      "org.scalameta" %%% "munit" % "0.7.29" % Test,
+      "org.scalameta" %%% "munit" % "0.7.29" % "it"
     ),
     Compile / npmDependencies ++=
       Seq(

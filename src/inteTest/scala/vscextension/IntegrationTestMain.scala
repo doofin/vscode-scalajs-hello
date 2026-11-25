@@ -17,7 +17,7 @@ object IntegrationTestMain {
 
     // integration tests for Munit. put your Munit test suites here
     val munitSuites =
-      Seq(new munitTest1)
+      Seq(new munitTest1, new LspIntegrationTest)
     munitSuites.foreach(execMunitTests)
   }
 

@@ -12,8 +12,8 @@ import Mocha.*
   */
 object mochaTest1 {
   def test1(): Unit = {
-    suite("sjs integration suite2") { () =>
-      test("example test 2") { () =>
+    suite("mocha scala.js integration suite") { () =>
+      test("mocha test 1: hello world command exists") { () =>
         val extension =
           vscode.extensions.getExtension[js.Any]("test.vscode-scalajs-hello")
 

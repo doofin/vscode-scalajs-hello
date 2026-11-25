@@ -15,7 +15,9 @@ import facade.vsLanguageClient.{
 }
 import facade.vscodeUtils.*
 
-/** LSP client example: connects over IPC to provide Plain Text completions and uppercase-word diagnostics. */
+/** LSP client example: connects over IPC to provide Plain Text completions and uppercase-word
+  * diagnostics.
+  */
 object lsp {
   def start(context: vscode.ExtensionContext): Unit = {
     val serverPath =

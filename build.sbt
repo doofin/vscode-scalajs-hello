@@ -1,10 +1,15 @@
 import scala.sys.process.*
 import org.scalajs.linker.interface.{ModuleKind, ModuleInitializer, ModuleSplitStyle}
 
-val outdir = "out" // output directory for the extension
+val mScalaVersion = "3.3.9"
+val extOutdir = "out" // output directory for the extension
 // open command in sbt
 lazy val open = taskKey[Unit]("open vscode")
 lazy val prepareExtension = taskKey[Unit]("prepare extension output")
+
+addCommandAlias("compile", ";fastOptJS")
+addCommandAlias("dev", "~fastOptJS")
+addCommandAlias("fix", ";scalafixEnable;scalafixAll;")
 
 lazy val root = project
   .in(file("."))
@@ -13,14 +18,10 @@ lazy val root = project
     ScalaJSBundlerPlugin,
     ScalablyTypedConverterPlugin
   )
-  .configs(IntegrationTest)
-  .settings(Defaults.itSettings: _*)
-  .settings(inConfig(IntegrationTest)(ScalaJSPlugin.testConfigSettings): _*)
   .settings(
-    IntegrationTest / sourceDirectory := baseDirectory.value / "src" / "inteTest",
     moduleName := "vscextension",
     organization := "com.doofin",
-    scalaVersion := "3.3.9",
+    scalaVersion := mScalaVersion,
     // warn unused imports and vars
     scalacOptions ++= Seq(
       "-Wunused:all"
@@ -29,14 +30,7 @@ lazy val root = project
     // testOptions += Tests.Setup(_ => sys.props("testing") = "true"),
     Compile / fastOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "out" / "extension.js",
-    IntegrationTest / mainClass := Some("vscextension.IntegrationTestMain"),
-    IntegrationTest / scalaJSUseTestModuleInitializer := false,
-    IntegrationTest / scalaJSUseMainModuleInitializer := true,
-    IntegrationTest / fastOptJS / artifactPath := baseDirectory.value / outdir / "test" / "extension.test.js",
-    libraryDependencies ++= Seq(
-      "org.scalameta" %%% "munit" % "1.0.4" % Test,
-      "org.scalameta" %%% "munit" % "1.0.4" % "it"
-    ),
+    libraryDependencies += "org.scalameta" %%% "munit" % "1.0.4" % Test,
     Compile / npmDependencies ++=
       Seq(
         "@types/vscode" -> "1.96.0", //
@@ -44,7 +38,6 @@ lazy val root = project
         "@types/node-fetch" -> "2.5.12", // ts 3.7,compile error for scalablytyped
         "@vscode/prompt-tsx" -> "0.3.0-alpha.18",
         "vscode-languageclient" -> "9.0.1" // working with manuallly created facade
-        // https://github.com/microsoft/vscode-languageserver-node/tree/release/client/9.0.1
       ),
     /* ++ // check if it is running in test
         (if (sys.props.get("testing") != Some("true"))
@@ -52,17 +45,27 @@ lazy val root = project
              "@types/vscode" -> "1.96.0"
            )
          else Seq.empty), */
-    stIgnore ++= List( // don't generate types with scalablytyped
-    ),
+    // don't generate types with scalablytyped
+    stIgnore ++= List(),
     prepareExtension := prepareExtensionTask().value,
     open := openVSCodeTask().dependsOn(Compile / fastOptJS, prepareExtension).value
-    // open := openVSCodeTask.dependsOn(Compile / fastOptJS / webpack).value,
-    // testFrameworks += new TestFramework("utest.runner.Framework")
-    // publishMarketplace := publishMarketplaceTask.dependsOn(fullOptJS in Compile).value
   )
-addCommandAlias("compile", ";fastOptJS")
-addCommandAlias("dev", "~fastOptJS")
-addCommandAlias("fix", ";scalafixEnable;scalafixAll;")
+
+lazy val integrationTest = project
+  .in(file("integrationTest"))
+  .enablePlugins(ScalaJSPlugin)
+  .dependsOn(root)
+  .settings(
+    moduleName := "vscextension-test",
+    scalaVersion := mScalaVersion,
+    Compile / sourceDirectory := baseDirectory.value.getParentFile / "src" / "inteTest",
+    Compile / mainClass := Some("vscextension.IntegrationTestMain"),
+    scalaJSUseMainModuleInitializer := true,
+    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)),
+    Compile / fastOptJS / artifactPath :=
+      baseDirectory.value.getParentFile / extOutdir / "test" / "extension.test.js",
+    libraryDependencies += "org.scalameta" %%% "munit" % "1.0.4"
+  )
 
 def openVSCodeTask(openVscode: Boolean = true): Def.Initialize[Task[Unit]] =
   Def
@@ -85,7 +88,7 @@ def prepareExtensionTask(): Def.Initialize[Task[Unit]] =
   Def.task[Unit] {
     val base = (ThisProject / baseDirectory).value
     val log = (ThisProject / streams).value.log
-    val output = base / outdir
+    val output = base / extOutdir
 
     IO.createDirectory(output / "server")
     IO.createDirectory(output / "test")

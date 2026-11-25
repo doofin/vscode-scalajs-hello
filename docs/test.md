@@ -1,18 +1,24 @@
 # Extension-host integration tests with `vscode-test`
+**Basic unit tests**
+`sbt test` runs the Scala.js MUnit tests under Node.js, which is suitable for basic tests with no dependency on VS Code APIs.
 
-`sbt test` runs the Scala.js MUnit tests under Node.js. It does not provide
-VS Code's runtime `vscode` module, so tests that need editor APIs must run in a
-VS Code Extension Development Host. The [`@vscode/test-cli`](https://github.com/microsoft/vscode-test-cli)
-CLI launches that host and runs Mocha tests inside it.
+**Integration tests**
+`sbt test` runs the Scala.js MUnit tests under Node.js, but does not provide `vscode` module, so tests that need editor APIs requires special handling. 
 
-This follows the [VS Code testing guide](https://code.visualstudio.com/api/working-with-extensions/testing-extension)
-and the local [`helloworld-test-cli-sample`](./src-ref/vscode-extension-samples/helloworld-test-cli-sample/README.md).
-The steps below describe how to add the test runner; they do not add its npm
-dependencies or configure it in this repository.
+This project has already set up the prerequisites for integration tests, so you can directly run `npm test`. The integration tests are under `src/inteTest`
 
-## 1. Install the test runner
 
-From the repository root, install the CLI and the VS Code desktop test runner:
+The [`@vscode/test-cli`](https://github.com/microsoft/vscode-test-cli)
+CLI launches that host and runs Mocha(a js testing framework) tests inside it.
+
+references:
+- [VS Code testing guide](https://code.visualstudio.com/api/working-with-extensions/testing-extension) 
+- [`helloworld-test-cli-sample`](./src-ref/vscode-extension-samples/helloworld-test-cli-sample/README.md).
+
+## Mechanism of integration tests
+### 1. Install the test runner
+
+From the repository root, do
 
 ```bash
 npm install --save-dev @vscode/test-cli @vscode/test-electron
@@ -30,7 +36,7 @@ Add a script to the root `package.json`:
 
 Keep any existing scripts when adding this entry.
 
-## 2. Configure the CLI
+### 2. Configure the CLI
 
 Create `.vscode-test.mjs` in the repository root:
 
@@ -46,7 +52,7 @@ The CLI uses this file to find the test files and launch VS Code. Its default
 VS Code version is Stable; set `version` or `workspaceFolder` in this
 configuration when a test requires a specific version or workspace.
 
-## 3. Add an extension-host test
+### 3. Add an extension-host test
 
 Add JavaScript Mocha tests under `test/integration/`. They run directly, so no
 additional TypeScript compiler setup is needed. For example, a test can
@@ -73,7 +79,7 @@ host, unlike `sbt test`. To test the language server, open a saved Plain Text
 document in the test workspace and exercise the editor completion/diagnostic
 APIs after activating the extension.
 
-## 4. Build and run
+### 4. Build and run
 
 Compile the extension and prepare its language-server files and dependencies
 before starting the test host:

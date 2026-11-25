@@ -93,7 +93,7 @@ def prepareExtensionTask(): Def.Initialize[Task[Unit]] =
     IO.createDirectory(output / "server")
     IO.createDirectory(output / "test")
     IO.copyFile(base / "package.json", output / "package.json")
-    IO.copyFile(base / "server" / "server.js", output / "server" / "server.js")
+    IO.copyFile(base / "src" / "res" / "server.js", output / "server" / "server.js")
     mLog(s"Copied server.js to output directory: ${output.getAbsolutePath}")
 
     def run(command: Seq[String]): Unit = {

@@ -21,7 +21,7 @@ object lsp {
     val serverPath =
       if (context.extensionMode == vscode.ExtensionMode.Development)
         "out/server/server.js"
-      else "server/server.js"
+      else "src/res/server.js"
     val serverModule = context.asAbsolutePath(serverPath)
     consoleLog(s"Server file: $serverModule")
     val outputChannel = vscode.window.createOutputChannel("Scala.js LSP")

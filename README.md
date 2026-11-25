@@ -1,21 +1,25 @@
 # VS Code extensions with Scala.js
-
-Build VS Code extensions in Scala.js. This repository includes examples :
+This repository demonstrates how to build VS Code extensions using Scala.js, including examples of:
 - commands
 - inline completions
 - code actions
-- language-client integration (plaintext completions and uppercase-word diagnostics)
+- language-client integration
 - syntax highlighting
+
+And also testing infrastructure:
+- basic unit tests with MUnit under `src/test/scala`
+- integration tests with VS Code extension host under `src/inteTest`
+see [docs/test.md](./docs/test.md) for details.
 
 WIP:
 - language configuration(Comment toggling,Brackets definition,etc)
+
 ## Get started
 
 Requirements: [Node.js/npm](https://nodejs.org/) and [sbt](https://www.scala-sbt.org/).
 
 1. Clone the repository and open it in VS Code. Let Metals import the sbt build.
-2. Run `sbt open` in the project root. This compiles the extension and opens a
-   VS Code Extension Development Host. The first run may take a while.
+2. Run `sbt open` in the project root. This compiles the extension and opens a VS Code Extension Development Host. The first run may take a while.
 3. In the new window, open the Command Palette, run **Hello World**, and
    confirm the notification appears.
 4. To try the language server, open a Plain Text document, type `AAA`, and
@@ -35,13 +39,12 @@ cd out &&  npx vsce package
 ```
 
 ## Testing
+For MUnit unit tests, use `sbt test`. For details on the Scala.js integration
+test setup, see [docs/test.md](./docs/test.md).
 
-Run the Scala.js extension-host integration test with `npm test`. It checks
-that the extension activates and registers the Hello World command. The first
-run downloads VS Code Stable.
 
-Use `sbt test` for MUnit unit tests. For details on the Scala.js integration
-test setup, see [docs/test-scalajs.md](./docs/test-scalajs.md).
+Run the integration test(involving the vscode api) with `npm test`. It checks
+that the extension activates and registers the Hello World command. 
 
 ## Usage
 ### Use it as a template
@@ -78,23 +81,9 @@ src/main/scala
 ├── commands.scala, codeActions.scala,etc // files for different extension features
 │   ├── facade // facade for extra vscode api
 │   ├── io // file and network io functions
+src/test/scala // unit tests with MUnit
+src/inteTest/scala // integration tests with VS Code api
 ```
-
-
-The project uses the following tools:
-* [SBT] build tool for building the project
-* [Scala.js] for general coding
-* [Scalably Typed] for JavaScript facades
-* [scalajs-bundler] for bundling the JavaScript dependencies
-
-SBT is configured with the `build.sbt` file. Scala.js, ScalablyTyped and the bundler are SBT plugins. With these, SBT manages your JavaScript `npm` dependencies. You should never have to run `npm` directly, simply edit the `npmDependencies` settings in `build.sbt`.
-
-[accessible-scala]: https://marketplace.visualstudio.com/items?itemName=scala-center.accessible-scala
-[helloworld-minimal-sample]: https://github.com/Microsoft/vscode-extension-samples/tree/master/helloworld-minimal-sample
-[Scalably Typed]: https://github.com/ScalablyTyped/Converter
-[SBT]: https://www.scala-sbt.org
-[ScalaJS]: http://www.scala-js.org
-[scalajs-bundler]: https://github.com/scalacenter/scalajs-bundler
 
 ## How to code in Scala js?
 
@@ -128,9 +117,10 @@ You can find more information and tutorials on the [Scala.js website](https://ww
  - [visualstudio.com/api/get-started](https://code.visualstudio.com/api/get-started/your-first-extension) in typescript.
  - [scalablytyped.com](https://scalablytyped.org/docs/plugin) for the typing plugin.
  - [scala js](https://www.scala-js.org/doc/project/) for the scala.js project.
+ - [SBT](https://www.scala-sbt.org) build tool for building the project
+ - [scalajs-bundler](https://github.com/scalacenter/scalajs-bundler) for bundling the JavaScript dependencies
 
 # contribute
-
 Welcome to contribute to this project! Here are some ideas:
 - Add more examples for vscode extension features.
 - Add github actions for automatic release 

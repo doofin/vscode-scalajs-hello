@@ -6,6 +6,10 @@ import scala.scalajs.js.annotation.JSImport
 import typings.vscode.mod as vscode
 import scala.annotation.unused
 
+/* This facade is incomplete.
+
+see node_modules/vscode-languageclient/lib/common/client.d.ts
+ */
 object vsLanguageClient {
   @js.native
   @JSImport("vscode-languageclient/node", "LanguageClient")

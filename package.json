@@ -27,7 +27,7 @@
     },
     "scripts": {
         "pretest": "sbt fastOptJS prepareExtension \"integrationTest / fastOptJS\"",
-        "test": "vscode-test"
+        "test": "FORCE_COLOR=1 vscode-test 2>&1 | grep --color=always -vE 'AgentHost|ChatModelSelection|DeprecationWarning|^\\[main|product\\.json|AgentPluginRepositoryService'"
     },
     "contributes": {
         "commands": [

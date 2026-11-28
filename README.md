@@ -58,12 +58,24 @@ lazy val root = Project("root", file(".")) dependsOn(vsc)
 ```
 
 ### Use it as a library
+publish local and use it as a library in your project:
+```bash
+sbt publishLocal
+```
+
+Then add
+```scala
+"com.github" % "vscextension" % "0.1.0-SNAPSHOT"
+```
+
+
+or use jitpack to include it as a dependency.
 **Currently not working** due to jitpack missing npm! Welcome to contribute to fix it.
 
 You can use this project as a library in your project by adding the following to your `build.sbt`:
 ```scala
 resolvers += Resolver.bintrayRepo("jitpack", "https://jitpack.io")
-libraryDependencies += "com.github.doofin" % "vscode-scalajs-hello" % "master-SNAPSHOT" // might be wrong
+libraryDependencies += "com.github" % "vscode-scalajs-hello" % "master-SNAPSHOT" // might be wrong
 ```
 
 You can find the latest version on

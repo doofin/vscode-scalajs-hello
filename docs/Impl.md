@@ -24,3 +24,6 @@ Principles of documentation editing
 1st round instructions:
 - visit the provided reference vscode plugins for inspiration about what example scenarios and utilities can be included in this documentation, make it brief.
 - add syntax highlighting example code for this scalajs project
+
+2nd round instructions:
+- why the gen typings.vscodeLanguageclient is weired? the auto converter src is at src-ref/converter . briefly analyze and explain to me

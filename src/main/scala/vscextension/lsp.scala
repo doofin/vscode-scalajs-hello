@@ -13,6 +13,8 @@ import facade.vsLanguageClient.{
   Trace,
   TransportKind
 }
+import typings.vscodeLanguageclient.libCommonDocumentSymbolMod.DocumentSymbolMiddleware
+import typings.vscodeLanguageclient.libCommonClientMod.Middleware
 import facade.vscodeUtils.*
 
 /** LSP client example: connects over IPC to provide Plain Text completions and uppercase-word
@@ -35,10 +37,33 @@ object lsp {
       debug = NodeModule(serverModule, TransportKind.ipc)
     )
 
+    val symbolMiddleware = DocumentSymbolMiddleware()
+      .setProvideDocumentSymbols((thisArg: Unit, document, token, next) => {
+        val result = next(thisArg, document, token)
+        js.Dynamic.global.Promise
+          .resolve(result)
+          .`then`((symbols: js.Any) =>
+            if (symbols == null || js.isUndefined(symbols)) symbols
+            else
+              symbols
+                .asInstanceOf[js.Array[js.Dynamic]]
+                .filter((symbol: js.Dynamic) =>
+                  !symbol.selectDynamic("name").asInstanceOf[String].startsWith("_")
+                )
+          )
+          .asInstanceOf[
+            vscode.ProviderResult[
+              js.Array[vscode.DocumentSymbol | vscode.SymbolInformation]
+            ]
+          ]
+      })
+      .asInstanceOf[Middleware]
+
     val clientOptions = LanguageClientOptions(
       documentSelector = js.Array(DocumentFilter("file", "plaintext")),
       outputChannel = outputChannel,
-      traceOutputChannel = outputChannel
+      traceOutputChannel = outputChannel,
+      middleware = symbolMiddleware
     )
     val client = new LanguageClient(
       "languageServerExample",

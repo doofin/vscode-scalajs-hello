@@ -28,3 +28,12 @@ Principles of documentation editing
 2nd round instructions:
 - why the gen typings.vscodeLanguageclient is weired? the auto converter src is at src-ref/converter . briefly analyze and explain to me
 - check node_modules/vscode-languageclient/lib/common/client.d.ts and make Middleware typings better for the LanguageClient facade
+- impl integration test for something like below(for language client middleware):
+```js
+middleware: {
+  provideDocumentSymbols: async (document, token, next) => {
+    const symbols = await next(document, token);
+    return symbols?.filter((symbol) => shouldShowSymbol(symbol));
+  },
+},
+```

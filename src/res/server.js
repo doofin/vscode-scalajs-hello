@@ -2,6 +2,7 @@ const {
   CompletionItemKind,
   DiagnosticSeverity,
   ProposedFeatures,
+  SymbolKind,
   TextDocuments,
   TextDocumentSyncKind,
   createConnection
@@ -14,7 +15,8 @@ const documents = new TextDocuments(TextDocument);
 connection.onInitialize(() => ({
   capabilities: {
     textDocumentSync: TextDocumentSyncKind.Incremental,
-    completionProvider: { resolveProvider: true }
+    completionProvider: { resolveProvider: true },
+    documentSymbolProvider: true
   }
 }));
 
@@ -58,6 +60,20 @@ connection.onCompletionResolve(item => {
     item.documentation = "JavaScript documentation";
   }
   return item;
+});
+
+connection.onDocumentSymbol(params => {
+  const document = documents.get(params.textDocument.uri);
+  if (!document) return [];
+
+  const range = {
+    start: { line: 0, character: 0 },
+    end: { line: 0, character: document.getText().length }
+  };
+  return [
+    { name: "VisibleSymbol", kind: SymbolKind.Variable, range, selectionRange: range },
+    { name: "_internalSymbol", kind: SymbolKind.Variable, range, selectionRange: range }
+  ];
 });
 
 documents.listen(connection);

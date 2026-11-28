@@ -5,8 +5,11 @@ import scala.scalajs.js.annotation.JSImport
 import scala.annotation.nowarn
 
 import typings.vscode.mod as vscode
+import typings.vscodeLanguageclient.libCommonClientMod.Middleware
 
 /*   import typings.vscodeLanguageclient.mod.BaseLanguageClient
+
+see node_modules/vscode-languageclient/lib/common/client.d.ts
  */
 @nowarn("msg=unused explicit parameter")
 object vsLanguageClient {
@@ -36,7 +39,7 @@ object vsLanguageClient {
     ) = this()
 
     val name: String = js.native
-    val middleware: js.Any = js.native
+    val middleware: Middleware = js.native
     val clientOptions: LanguageClientOptions = js.native
     val protocol2CodeConverter: js.Any = js.native
     val code2ProtocolConverter: js.Any = js.native
@@ -315,7 +318,7 @@ object vsLanguageClient {
     val initializationFailedHandler: js.UndefOr[js.Function1[js.Any, Boolean]] = js.native
     val progressOnInitialization: js.UndefOr[Boolean] = js.native
     val errorHandler: js.UndefOr[ErrorHandler] = js.native
-    val middleware: js.UndefOr[js.Any] = js.native
+    val middleware: js.UndefOr[Middleware] = js.native
     val uriConverters: js.UndefOr[js.Any] = js.native
     val workspaceFolder: js.UndefOr[vscode.WorkspaceFolder] = js.native
     val connectionOptions: js.UndefOr[js.Any] = js.native
@@ -330,14 +333,16 @@ object vsLanguageClient {
         documentSelector: js.Array[vscode.DocumentFilter],
         outputChannel: vscode.OutputChannel,
         traceOutputChannel: js.UndefOr[vscode.OutputChannel] = js.undefined,
-        initializationOptions: js.UndefOr[js.Any] = js.undefined
+        initializationOptions: js.UndefOr[js.Any] = js.undefined,
+        middleware: js.UndefOr[Middleware] = js.undefined
     ): LanguageClientOptions =
       js.Dynamic
         .literal(
           documentSelector = documentSelector,
           outputChannel = outputChannel,
           traceOutputChannel = traceOutputChannel,
-          initializationOptions = initializationOptions
+          initializationOptions = initializationOptions,
+          middleware = middleware
         )
         .asInstanceOf[LanguageClientOptions]
   }
